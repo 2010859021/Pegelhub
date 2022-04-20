@@ -1,0 +1,63 @@
+spring:
+  main:
+    allow-bean-definition-overriding: true
+
+  rabbitmq:
+    host: ${RABBIT_URL}
+    port: 5672
+    virtual-host: /
+    username: ${RABBIT_USER}
+    password: ${RABBIT_PASSWORD}
+
+  cloud:
+    config:
+      enabled: false
+
+  jpa:
+    show-sql: true
+
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+    hibernate:
+      ddl-auto: update
+
+  application:
+    name: connector-data-service
+
+  datasource:
+    # CHANGEME
+    url: jdbc:postgresql://localhost:5432/users
+    username: postgres
+    password: usermanager
+
+security:
+  # CHANGEME
+  configurations:
+    - path: /somepath
+      role: somerole
+
+keycloak:
+  auth-server-url: ${AUTH_URL}
+  realm: ${AUTH_REALM}
+  resource: ${AUTH_RESOURCE}
+  public-client: true
+
+server:
+  address: 0.0.0.0
+  port: 8080
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${REGISTRY_URL}
+    registerWithEureka: true
+    fetchRegistry: true
+
+management:
+  port: 8081
+  endpoints:
+    web:
+      exposure:
+        include: '*'

@@ -1,0 +1,35 @@
+spring:
+  main:
+    allow-bean-definition-overriding: true
+
+  rabbitmq:
+    host: ${MQ_URL}
+    port: 5672
+    virtual-host: /
+    username: ${MQ_USER}
+    password: ${MQ_PASSWORD}
+
+  cloud:
+    config:
+      enabled: false
+
+  application:
+    name: component-registry
+
+server:
+  address: 0.0.0.0
+  port: 8080
+
+eureka:
+  instance:
+    hostname: ${EUREKA_HOSTNAME}
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
+
+management:
+  port: 8081
+  endpoints:
+    web:
+      exposure:
+        include: '*'
