@@ -14,6 +14,12 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.stm.pegelhub</groupId>
+            <artifactId>data-lib</artifactId>
+            <version>2022.01</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.keycloak.bom</groupId>
             <artifactId>keycloak-adapter-bom</artifactId>
             <version>17.0.0</version>
