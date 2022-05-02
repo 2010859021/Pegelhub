@@ -15,6 +15,11 @@
             <artifactId>component-skeleton</artifactId>
             <version>2022.01</version>
         </dependency>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>runtime</scope>
+        </dependency>
     </dependencies>
 
     <artifactId>meta-store</artifactId>
