@@ -9,6 +9,6 @@ import java.util.UUID;
 
 @Data
 public abstract class IdentifiableEntity {
-    @Id @Column(name = "id")
+    @Id @Column(name = "id", nullable = false)
     private UUID id;
 }
