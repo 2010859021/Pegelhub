@@ -4,12 +4,21 @@ import com.stm.pegelhub.component.base.InvalidEntityException;
 import com.stm.pegelhub.data.IdentifiableEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.util.List;
 
 @Service
 public abstract class EntityService<T extends IdentifiableEntity> {
     @Autowired
     protected MetaStoreClient repository;
+
+    protected final Class<T> tClass;
+
+    protected EntityService(Class<T> tClass) {
+        this.tClass = tClass;
+    }
 
     /**
      * A general validation method to check the entities fields and validity before every call to the meta persistence
@@ -87,5 +96,24 @@ public abstract class EntityService<T extends IdentifiableEntity> {
             onAfterSave(entity);
         }
         throw new InvalidEntityException(entity);
+    }
+
+    /**
+     * Find entity in persistence layer by id.
+     *
+     * @param entity The entity holding its id
+     * @return The returned entity from persistence layer
+     */
+    public final Mono<T> findById(T entity) {
+        return repository.findById(entity).map(data -> (T) data);
+    }
+
+    /**
+     * Find entity in persistence layer by id.
+     *
+     * @return The returned entity from persistence layer
+     */
+    public final Flux<T> findAll() {
+        return repository.findAll(tClass);
     }
 }
