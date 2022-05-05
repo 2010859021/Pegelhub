@@ -1,3 +1,5 @@
+package Error;
+
 import com.stm.pegelhub.data.Error;
 import org.springframework.web.bind.annotation.*;
 
