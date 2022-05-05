@@ -6,4 +6,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ConnectorEntityService extends EntityService<Connector> {
+    protected ConnectorEntityService(Class<Connector> connectorClass) {
+        super(connectorClass);
+    }
 }

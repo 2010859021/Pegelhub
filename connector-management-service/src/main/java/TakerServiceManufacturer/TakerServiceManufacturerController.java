@@ -14,8 +14,10 @@ public class TakerServiceManufacturerController extends EntityController<TakerSe
     }
 
     @GetMapping("/takerServiceManufacturer")
-    void getTakerServiceManufacturer(UUID id){
-        super.dataService.get(id);
+    TakerServiceManufacturer getTakerServiceManufacturer(UUID id){
+        TakerServiceManufacturer searchObj = new TakerServiceManufacturer();
+        searchObj.setId(id);
+        return super.dataService.findById(searchObj).block();
     }
 
     @PutMapping("/takerServiceManufacturer")
@@ -25,6 +27,6 @@ public class TakerServiceManufacturerController extends EntityController<TakerSe
 
     @DeleteMapping("/takerServiceManufacturer")
     void deleteTakerServiceManufacturer(UUID id){
-        super.dataService.delete(takerServiceManufacturer);
+        super.dataService.delete(getTakerServiceManufacturer(id));
     }
 }

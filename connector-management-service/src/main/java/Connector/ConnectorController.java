@@ -14,8 +14,10 @@ public class ConnectorController extends EntityController<Connector> {
     }
 
     @GetMapping("/connector")
-    void getConnector(UUID id){
-        super.dataService.get(id);
+    Connector getConnector(UUID id){
+        Connector searchObj = new Connector();
+        searchObj.setId(id);
+        return super.dataService.findById(searchObj).block();
     }
 
     @PutMapping("/connector")
@@ -25,6 +27,6 @@ public class ConnectorController extends EntityController<Connector> {
 
     @DeleteMapping("/connector")
     void deleteConnector(UUID id){
-        super.dataService.delete(connector);
+        super.dataService.delete(getConnector(id));
     }
 }

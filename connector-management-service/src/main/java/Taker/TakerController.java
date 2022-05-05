@@ -14,8 +14,10 @@ public class TakerController extends EntityController<Taker> {
     }
 
     @GetMapping("/taker")
-    void getTaker(UUID id){
-        super.dataService.get(id);
+    Taker getTaker(UUID id){
+        Taker searchObj = new Taker();
+        searchObj.setId(id);
+        return super.dataService.findById(searchObj).block();
     }
 
     @PutMapping("/taker")
@@ -25,6 +27,6 @@ public class TakerController extends EntityController<Taker> {
 
     @DeleteMapping("/taker")
     void deleteTaker(UUID id){
-        super.dataService.delete(taker);
+        super.dataService.delete(getTaker(id));
     }
 }

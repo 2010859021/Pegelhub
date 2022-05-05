@@ -14,8 +14,10 @@ public class SupplierController extends EntityController<Supplier> {
     }
 
     @GetMapping("/supplier")
-    void getSupplier(UUID id){
-        super.dataService.get(id);
+    Supplier getSupplier(UUID id){
+        Supplier searchObj = new Supplier();
+        searchObj.setId(id);
+        return super.dataService.findById(searchObj).block();
     }
 
     @PutMapping("/supplier")
@@ -25,6 +27,6 @@ public class SupplierController extends EntityController<Supplier> {
 
     @DeleteMapping("/supplier")
     void deleteSupplier(UUID id){
-        super.dataService.delete(supplier);
+        super.dataService.delete(getSupplier(id));
     }
 }

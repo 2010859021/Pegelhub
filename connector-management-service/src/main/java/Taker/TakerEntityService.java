@@ -6,4 +6,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class TakerEntityService extends EntityService<Taker> {
+    protected TakerEntityService(Class<Taker> takerClass) {
+        super(takerClass);
+    }
 }

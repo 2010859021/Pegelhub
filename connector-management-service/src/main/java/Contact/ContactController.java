@@ -14,8 +14,10 @@ public class ContactController extends EntityController<Contact> {
     }
 
     @GetMapping("/contact")
-    void getContact(UUID id){
-        super.dataService.get(id);
+    Contact getContact(UUID id){
+        Contact searchObj = new Contact();
+        searchObj.setId(id);
+        return super.dataService.findById(searchObj).block();
     }
 
     @PutMapping("/contact")
@@ -25,6 +27,6 @@ public class ContactController extends EntityController<Contact> {
 
     @DeleteMapping("/contact")
     void deleteContact(UUID id){
-        super.dataService.delete(contact);
+        super.dataService.delete(getContact(id));
     }
 }

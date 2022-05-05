@@ -14,8 +14,10 @@ public class StationManufacturerController extends EntityController<StationManuf
     }
 
     @GetMapping("/stationManufacturer")
-    void getStationManufacturer(UUID id){
-        super.dataService.get(id);
+    StationManufacturer getStationManufacturer(UUID id){
+        StationManufacturer searchObj = new StationManufacturer();
+        searchObj.setId(id);
+        return super.dataService.findById(searchObj).block();
     }
 
     @PutMapping("/stationManufacturer")
@@ -25,6 +27,6 @@ public class StationManufacturerController extends EntityController<StationManuf
 
     @DeleteMapping("/stationManufacturer")
     void deleteStationManufacturer(UUID id){
-        super.dataService.delete(stationManufacturer);
+        super.dataService.delete(getStationManufacturer(id));
     }
 }

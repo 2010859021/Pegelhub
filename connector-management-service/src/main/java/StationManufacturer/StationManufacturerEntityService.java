@@ -6,4 +6,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class StationManufacturerEntityService extends EntityService<StationManufacturer> {
+    protected StationManufacturerEntityService(Class<StationManufacturer> stationManufacturerClass) {
+        super(stationManufacturerClass);
+    }
 }

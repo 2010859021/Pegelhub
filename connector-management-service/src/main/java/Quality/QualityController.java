@@ -14,8 +14,10 @@ public class QualityController extends EntityController<Quality> {
     }
 
     @GetMapping("/quality")
-    void getQuality(UUID id){
-        super.dataService.get(id);
+    Quality getQuality(UUID id){
+        Quality searchObj = new Quality();
+        searchObj.setId(id);
+        return super.dataService.findById(searchObj).block();
     }
 
     @PutMapping("/quality")
@@ -25,6 +27,6 @@ public class QualityController extends EntityController<Quality> {
 
     @DeleteMapping("/quality")
     void deleteQuality(UUID id){
-        super.dataService.delete(quality);
+        super.dataService.delete(getQuality(id));
     }
 }

@@ -14,8 +14,10 @@ public class FunctionModuleController extends EntityController<FunctionModule> {
     }
 
     @GetMapping("/functionModule")
-    void getFunctionModule(UUID id){
-        super.dataService.get(id);
+    FunctionModule getFunctionModule(UUID id){
+        FunctionModule searchObj = new FunctionModule();
+        searchObj.setId(id);
+        return super.dataService.findById(searchObj).block();
     }
 
     @PutMapping("/functionModule")
@@ -25,6 +27,6 @@ public class FunctionModuleController extends EntityController<FunctionModule> {
 
     @DeleteMapping("/functionModule")
     void deleteFunctionModule(UUID id){
-        super.dataService.delete(functionModule);
+        super.dataService.delete(getFunctionModule(id));
     }
 }

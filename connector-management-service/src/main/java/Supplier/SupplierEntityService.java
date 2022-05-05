@@ -6,4 +6,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class SupplierEntityService extends EntityService<Supplier> {
+    protected SupplierEntityService(Class<Supplier> supplierClass) {
+        super(supplierClass);
+    }
 }

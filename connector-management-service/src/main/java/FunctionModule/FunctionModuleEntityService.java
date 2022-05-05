@@ -6,4 +6,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class FunctionModuleEntityService extends EntityService<FunctionModule> {
+    protected FunctionModuleEntityService(Class<FunctionModule> functionModuleClass) {
+        super(functionModuleClass);
+    }
 }

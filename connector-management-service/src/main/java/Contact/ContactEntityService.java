@@ -7,4 +7,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ContactEntityService extends EntityService<Contact> {
 
+    protected ContactEntityService(Class<Contact> contactClass) {
+        super(contactClass);
+    }
 }
