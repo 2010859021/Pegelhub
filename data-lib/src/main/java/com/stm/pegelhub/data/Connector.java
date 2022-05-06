@@ -1,46 +1,45 @@
 package com.stm.pegelhub.data;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.UUID;
 
 @Entity
 @Data
-@Table(name="Connector")
-public class Connector extends  IdentifiableEntity{
+@Table(name = "Connector")
+public class Connector extends IdentifiableEntity {
 
-    //FK to contact table
-    @Column(name= "", nullable = false)
-   private UUID manufacturerId;
 
-    @Column(name= "", nullable = false)
+    @ManyToOne
+    @JoinColumn(nullable = false)
+    private Contact manufacturerId;
+
+    @Column(name = "", nullable = false)
     private String typeDescription;
 
-    @Column(name= "", nullable = false)
+    @Column(name = "", nullable = false)
     private Double softwareVersion;
 
-    @Column(name= "", nullable = false)
+    @Column(name = "", nullable = false)
     private Double worksFromDataVersion;
 
-    @Column(name= "", nullable = false)
+    @Column(name = "", nullable = false)
     private String dataDefinition;
 
-    //FK to contact table
-    @Column(name= "", nullable = false)
-    private UUID softwareManufacturerId;
+    @ManyToOne
+    @JoinColumn(nullable = false)
+    private Contact softwareManufacturerId;
 
-    //FK to contact table
-    @Column(name= "", nullable = false)
-    private UUID technicallyResponsibleId;
+    @ManyToOne
+    @JoinColumn(nullable = false)
+    private Contact technicallyResponsibleId;
 
-    //FK to contact table
-    @Column(name= "", nullable = false)
-    private UUID operatingCompanyId;
+    @ManyToOne
+    @JoinColumn(nullable = false)
+    private Contact operatingCompanyId;
 
-    @Column(name= "")
+    @Column(name = "")
+    @Lob
     private String nodes;
 
 }

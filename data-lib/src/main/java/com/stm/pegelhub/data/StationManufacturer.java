@@ -1,24 +1,23 @@
 package com.stm.pegelhub.data;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
 @Data
-@Table(name="Station_Manufacturer")
+@Table(name="StationManufacturer")
 public class StationManufacturer extends  IdentifiableEntity{
 
-    @Column(name= "",nullable = false)
+    @Column(nullable = false)
     private String stationManufacturerName;
 
-    @Column(name= "",nullable = false)
+    @Column(nullable = false)
     private String stationManufacturerTyp;
 
-    @Column(name= "",nullable = false)
+    @Column(nullable = false)
     private String stationManufacturerFirmwareVersion;
 
-    @Column(name= "")
+    @Column()
+    @Lob
     private String stationRemark;
 }

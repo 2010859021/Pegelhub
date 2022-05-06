@@ -1,8 +1,6 @@
 package com.stm.pegelhub.data;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
@@ -10,52 +8,53 @@ import lombok.Data;
 @Table(name="Contact")
 public class Contact extends  IdentifiableEntity{
 
-    @Column(name= "")
+    @Column()
     private String organization;
 
-    @Column(name= "")
+    @Column()
     private String contactPerson;
 
-    @Column(name= "")
+    @Column()
     private String contactStreet;
 
-    @Column(name= "")
+    @Column()
     private String contactPlz;
 
-    @Column(name= "")
+    @Column()
     private String location;
 
-    @Column(name= "")
+    @Column()
     private String contactCountry;
 
-    @Column(name= "")
+    @Column()
     private String emergencyNumber;
 
-    @Column(name= "")
+    @Column()
     private String emergencyNumberTwo;
 
-    @Column(name= "")
+    @Column()
     private String emergencyMail;
 
-    @Column(name= "")
+    @Column()
     private String serviceNumber;
 
-    @Column(name= "")
+    @Column()
     private String serviceNumberTwo;
 
-    @Column(name= "")
+    @Column()
     private String serviceMail;
 
-    @Column(name= "")
+    @Column()
     private String administrationPhoneNumber;
 
-    @Column(name= "")
+    @Column()
     private String administrationPhoneNumberTwo;
 
-    @Column(name= "")
+    @Column()
     private String administrationMail;
 
-    @Column(name= "")
+    @Column()
+    @Lob
     private String contactNodes;
 
 }

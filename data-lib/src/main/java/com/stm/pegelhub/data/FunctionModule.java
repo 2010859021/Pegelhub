@@ -1,21 +1,19 @@
 package com.stm.pegelhub.data;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.UUID;
 
 @Entity
 @Data
-@Table(name="Function_Module")
+@Table(name="FunctionModule")
 public class FunctionModule extends  IdentifiableEntity{
 
-    //FK to connector table
-    @Column(name= "",nullable = false)
-    private UUID connectorId;
+    @ManyToOne
+    @JoinColumn(nullable = false)
+    private Connector connector;
 
-    @Column(name= "",nullable = false)
+    @Column(nullable = false)
     private String refreshRate;
 }

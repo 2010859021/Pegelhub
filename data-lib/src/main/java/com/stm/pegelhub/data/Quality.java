@@ -1,8 +1,6 @@
 package com.stm.pegelhub.data;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
@@ -10,9 +8,10 @@ import lombok.Data;
 @Table(name="Quality")
 public class Quality extends  IdentifiableEntity{
 
-    @Column(name= "",nullable = false)
+    @Column(nullable = false)
     private Double qualityCode;
 
-    @Column(name= "",nullable = false)
+    @Column(nullable = false)
+    @Lob
     private Double plaintext;
 }

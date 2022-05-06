@@ -1,49 +1,46 @@
 package com.stm.pegelhub.data;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.UUID;
 
 @Entity
 @Data
 @Table(name="Taker")
 public class Taker extends  IdentifiableEntity{
 
-    @Column(name= "",nullable = false)
+    @Column(nullable = false)
     private String stationNumber;
 
-    @Column(name= "",nullable = false)
+    @Column(nullable = false)
     private Integer stationId;
 
-    @Column(name= "",nullable = false)
+    @Column(nullable = false)
     private Integer stationChannel;
 
-    @Column(name= "",nullable = false)
+    @Column(nullable = false)
     private String channelUse;
 
-    @Column(name= "",nullable = false)
+    @Column(nullable = false)
     private String refreshRate;
 
-    // FK to taker service manufacturer table
-    @Column(name= "", nullable = false)
-    private UUID takerServiceManufacturerId;
+    @ManyToOne
+    @JoinColumn(nullable = false)
+    private TakerServiceManufacturer takerServiceManufacturer;
 
-    // FK to connector table
-    @Column( name= "",nullable = false)
-    private UUID connectorId;
+    @ManyToOne
+    @JoinColumn(nullable = false)
+    private Connector connector;
 
-    // FK to contact table
-    @Column( name= "")
-    private UUID takerContactId;
+    @ManyToOne
+    @JoinColumn()
+    private Contact takerContact;
 
-    // FK to contact table
-    @Column( name= "")
-    private UUID endUserId;
+    @ManyToOne
+    @JoinColumn()
+    private Contact endUser;
 
-    // FK to contact table
-    @Column( name= "")
-    private UUID dataNetworkOperatorId;
+    @ManyToOne
+    @JoinColumn()
+    private Contact dataNetworkOperator;
 }
