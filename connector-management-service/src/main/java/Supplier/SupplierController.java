@@ -3,30 +3,38 @@ package Supplier;
 import com.stm.pegelhub.component.base.web.EntityController;
 import com.stm.pegelhub.data.Supplier;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.UUID;
 
 @RestController
+@RequestMapping("/supplier")
 public class SupplierController extends EntityController<Supplier> {
-    @PostMapping("/supplier")
-    void createSupplier(Supplier supplier){
-        super.dataService.save(supplier);
+    @PostMapping("/")
+    Mono<Supplier> createSupplier(@RequestBody Supplier supplier) {
+        return super.dataService.save(supplier);
     }
 
-    @GetMapping("/supplier")
-    Supplier getSupplier(UUID id){
+    @GetMapping("/{uuid}")
+    Supplier getSupplierById(@PathVariable UUID uuid) {
         Supplier searchObj = new Supplier();
-        searchObj.setId(id);
+        searchObj.setId(uuid);
         return super.dataService.findById(searchObj).block();
     }
 
-    @PutMapping("/supplier")
-    void updateSupplier(Supplier supplier){
-        super.dataService.save(supplier);
+    @GetMapping("/")
+    Flux<Supplier> getAllSuppliers() {
+        return super.dataService.findAll();
     }
 
-    @DeleteMapping("/supplier")
-    void deleteSupplier(UUID id){
-        super.dataService.delete(getSupplier(id));
+    @PutMapping("/")
+    Mono<Supplier> updateSupplier(@RequestBody Supplier supplier) {
+        return super.dataService.save(supplier);
+    }
+
+    @DeleteMapping("/{uuid:UUID}")
+    void deleteSupplier(@PathVariable UUID uuid) {
+        super.dataService.delete(getSupplierById(uuid));
     }
 }
