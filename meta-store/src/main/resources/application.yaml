@@ -28,9 +28,9 @@ spring:
 
   datasource:
     # CHANGEME
-    url: jdbc:postgresql://localhost:5432/users
-    username: postgres
-    password: usermanager
+    url: jdbc:postgres://zdgmiriwayiuuk:8d90c3ed62757d9b36fceb9c1460dffdb51b8d9322d90e50a3e4e58943bf9edd@ec2-52-18-116-67.eu-west-1.compute.amazonaws.com:5432/dea9rorslm9bbv
+    username: zdgmiriwayiuuk
+    password: 8d90c3ed62757d9b36fceb9c1460dffdb51b8d9322d90e50a3e4e58943bf9edd
 
 security:
   # CHANGEME
