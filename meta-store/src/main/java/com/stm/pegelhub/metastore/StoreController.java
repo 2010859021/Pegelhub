@@ -35,4 +35,22 @@ public class StoreController {
         t.setId(UUID.randomUUID());
         return ResponseEntity.ok(handlerService.persist(t));
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<? extends IdentifiableEntity> updateEntity(@PathVariable("class") String entityClass, @PathVariable("id") UUID id, @RequestBody String objectRaw) throws ClassNotFoundException, IOException {
+        ObjectMapper parser = new ObjectMapper();
+        IdentifiableEntity t = (IdentifiableEntity) parser.readValue(objectRaw, getEntityClass(entityClass));
+        t.setId(id);
+        return ResponseEntity.ok(handlerService.persist(t));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<? extends IdentifiableEntity> findEntityById(@PathVariable("class") String entityClass, @PathVariable("id") UUID id) throws ClassNotFoundException, IOException {
+        return ResponseEntity.ok(handlerService.findById(getEntityClass(entityClass), id));
+    }
+
+    @DeleteMapping ("/{id}")
+    public void deleteEntityById(@PathVariable("class") String entityClass, @PathVariable("id") UUID id) throws ClassNotFoundException, IOException {
+        handlerService.delete(getEntityClass(entityClass), id);
+    }
 }
