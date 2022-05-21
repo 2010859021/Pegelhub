@@ -3,7 +3,7 @@ package com.stm.pegelhub.metastore;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.stm.pegelhub.data.IdentifiableEntity;
+import com.stm.pegelhub.metastore.entity.IdentifiableEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +20,7 @@ public class StoreController {
     private EntityHandlerService handlerService;
 
     private Class<? extends IdentifiableEntity> getEntityClass(String name) throws ClassNotFoundException {
-        return (Class<? extends IdentifiableEntity>) Class.forName("com.stm.pegelhub.data." + name);
+        return (Class<? extends IdentifiableEntity>) Class.forName("com.stm.pegelhub.metastore.entity." + name);
     }
 
     @GetMapping("/")

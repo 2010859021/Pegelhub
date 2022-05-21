@@ -1,6 +1,6 @@
 package com.stm.pegelhub.metastore.store;
 
-import com.stm.pegelhub.data.FunctionModule;
+import com.stm.pegelhub.metastore.entity.FunctionModule;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

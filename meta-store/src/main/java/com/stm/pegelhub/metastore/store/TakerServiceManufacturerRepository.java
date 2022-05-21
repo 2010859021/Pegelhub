@@ -1,6 +1,6 @@
 package com.stm.pegelhub.metastore.store;
 
-import com.stm.pegelhub.data.TakerServiceManufacturer;
+import com.stm.pegelhub.metastore.entity.TakerServiceManufacturer;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

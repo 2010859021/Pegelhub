@@ -54,15 +54,12 @@ public abstract class EntityService<T extends IdentifiableEntity> {
      * @param entity The entity to be persisted
      * @return The returned entity from persistence layer
      */
-    public final Mono<T> save(T entity) {
+    public final T save(T entity) {
         if (validateEntityForPersist(entity)) {
             onBeforeSave(entity);
-            return repository
-                    .save(entity)
-                    .map(identifiableEntity -> {
-                        onAfterSave((T) identifiableEntity);
-                        return (T) identifiableEntity;
-                    });
+            T t = (T) repository.save(entity);
+            onAfterSave(t);
+            return t;
         }
         throw new InvalidEntityException(entity);
     }
@@ -104,8 +101,8 @@ public abstract class EntityService<T extends IdentifiableEntity> {
      * @param entity The entity holding its id
      * @return The returned entity from persistence layer
      */
-    public final Mono<T> findById(T entity) {
-        return repository.findById(entity).map(data -> (T) data);
+    public final T findById(T entity) {
+        return (T) repository.findById(entity);
     }
 
     /**
@@ -113,7 +110,7 @@ public abstract class EntityService<T extends IdentifiableEntity> {
      *
      * @return The returned entity from persistence layer
      */
-    public final Flux<T> findAll() {
+    public final List<T> findAll() {
         return repository.findAll(tClass);
     }
 }

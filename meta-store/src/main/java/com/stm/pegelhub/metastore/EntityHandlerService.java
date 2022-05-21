@@ -1,6 +1,6 @@
 package com.stm.pegelhub.metastore;
 
-import com.stm.pegelhub.data.*;
+import com.stm.pegelhub.metastore.entity.*;
 import com.stm.pegelhub.metastore.store.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
