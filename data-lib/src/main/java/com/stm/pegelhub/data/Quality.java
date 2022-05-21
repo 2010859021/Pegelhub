@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class Quality extends  IdentifiableEntity{
-    private Double qualityCode;
-    private Double plaintext;
+    private Integer qualityCode;
+    private String plaintext;
 }
