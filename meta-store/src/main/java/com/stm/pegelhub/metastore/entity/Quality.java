@@ -11,11 +11,10 @@ import javax.persistence.Table;
 @Data
 @Table(name="Quality")
 public class Quality extends IdentifiableEntity {
-
     @Column(nullable = false)
-    private Double qualityCode;
+    private Integer qualityCode;
 
     @Column(nullable = false)
     @Lob
-    private Double plaintext;
+    private String plaintext;
 }

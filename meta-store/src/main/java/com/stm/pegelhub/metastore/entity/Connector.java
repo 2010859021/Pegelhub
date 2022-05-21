@@ -9,37 +9,35 @@ import javax.persistence.*;
 @Data
 @Table(name = "Connector")
 public class Connector extends IdentifiableEntity {
-
-
     @ManyToOne
     @JoinColumn(nullable = false)
-    private Contact manufacturerId;
+    private Contact manufacturer;
 
-    @Column(name = "", nullable = false)
+    @Column(nullable = false)
     private String typeDescription;
 
-    @Column(name = "", nullable = false)
+    @Column(nullable = false)
     private Double softwareVersion;
 
-    @Column(name = "", nullable = false)
+    @Column(nullable = false)
     private Double worksFromDataVersion;
 
-    @Column(name = "", nullable = false)
+    @Column(nullable = false)
     private String dataDefinition;
 
     @ManyToOne
     @JoinColumn(nullable = false)
-    private Contact softwareManufacturerId;
+    private Contact softwareManufacturer;
 
     @ManyToOne
     @JoinColumn(nullable = false)
-    private Contact technicallyResponsibleId;
+    private Contact technicallyResponsible;
 
     @ManyToOne
     @JoinColumn(nullable = false)
-    private Contact operatingCompanyId;
+    private Contact operatingCompany;
 
-    @Column(name = "")
+    @Column
     @Lob
     private String nodes;
 
