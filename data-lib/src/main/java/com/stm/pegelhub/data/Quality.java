@@ -9,9 +9,9 @@ import lombok.Data;
 public class Quality extends  IdentifiableEntity{
 
     @Column(nullable = false)
-    private Double qualityCode;
+    private Integer qualityCode;
 
     @Column(nullable = false)
     @Lob
-    private Double plaintext;
+    private String plaintext;
 }

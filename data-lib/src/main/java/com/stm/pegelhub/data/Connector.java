@@ -12,7 +12,7 @@ public class Connector extends IdentifiableEntity {
 
     @ManyToOne
     @JoinColumn(nullable = false)
-    private Contact manufacturerId;
+    private Contact manufacturer;
 
     @Column(name = "", nullable = false)
     private String typeDescription;
@@ -28,15 +28,15 @@ public class Connector extends IdentifiableEntity {
 
     @ManyToOne
     @JoinColumn(nullable = false)
-    private Contact softwareManufacturerId;
+    private Contact softwareManufacturer;
 
     @ManyToOne
     @JoinColumn(nullable = false)
-    private Contact technicallyResponsibleId;
+    private Contact technicallyResponsible;
 
     @ManyToOne
     @JoinColumn(nullable = false)
-    private Contact operatingCompanyId;
+    private Contact operatingCompany;
 
     @Column(name = "")
     @Lob
