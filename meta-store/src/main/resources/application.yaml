@@ -1,4 +1,7 @@
 spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
   main:
     allow-bean-definition-overriding: true
 
@@ -27,22 +30,16 @@ spring:
     name: meta-store
 
   datasource:
-    # CHANGEME
-    url: jdbc:postgres://zdgmiriwayiuuk:8d90c3ed62757d9b36fceb9c1460dffdb51b8d9322d90e50a3e4e58943bf9edd@ec2-52-18-116-67.eu-west-1.compute.amazonaws.com:5432/dea9rorslm9bbv
-    username: zdgmiriwayiuuk
-    password: 8d90c3ed62757d9b36fceb9c1460dffdb51b8d9322d90e50a3e4e58943bf9edd
+    url: jdbc:postgresql://${DB_URI}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
 
-security:
-  # CHANGEME
-  configurations:
-    - path: /somepath
-      role: somerole
-
-keycloak:
-  auth-server-url: ${AUTH_URL}
-  realm: ${AUTH_REALM}
-  resource: ${AUTH_RESOURCE}
-  public-client: true
+#security:
+#  # CHANGEME
+#  configurations:
+#    - path: /somepath
+#      role: somerole
 
 server:
   address: 0.0.0.0
