@@ -1,15 +1,17 @@
 package com.stm.pegelhub.data;
 
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Id;
 import lombok.Data;
 
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
 import java.util.UUID;
 
-@Data
+@Data @MappedSuperclass
 public abstract class IdentifiableEntity implements Serializable {
-    @Id @Column(name = "id", nullable = false)
+    @Id
+    @Column(name = "id", nullable = false)
     private UUID id;
 }
