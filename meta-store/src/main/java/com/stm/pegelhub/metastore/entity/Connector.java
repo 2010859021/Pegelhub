@@ -3,6 +3,7 @@ package com.stm.pegelhub.metastore.entity;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.UUID;
 
 
 @Entity
@@ -41,4 +42,10 @@ public class Connector extends IdentifiableEntity {
     @Lob
     private String nodes;
 
+    public Connector(String uuid) {
+        setId(UUID.fromString(uuid));
+    }
+
+    public Connector() {
+    }
 }

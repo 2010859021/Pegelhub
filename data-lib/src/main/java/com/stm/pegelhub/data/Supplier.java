@@ -4,6 +4,7 @@ package com.stm.pegelhub.data;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.UUID;
 
 
 @Data
@@ -54,4 +55,11 @@ public class Supplier extends IdentifiableEntity {
     private Double hsq;
     private Double mq;
     private Double rnq;
+
+    public Supplier(String uuid) {
+        setId(UUID.fromString(uuid));
+    }
+
+    public Supplier() {
+    }
 }

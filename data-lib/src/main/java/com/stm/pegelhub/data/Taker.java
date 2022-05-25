@@ -2,6 +2,8 @@ package com.stm.pegelhub.data;
 
 import lombok.Data;
 
+import java.util.UUID;
+
 
 @Data
 public class Taker extends  IdentifiableEntity{
@@ -15,4 +17,11 @@ public class Taker extends  IdentifiableEntity{
     private Contact takerContact;
     private Contact endUser;
     private Contact dataNetworkOperator;
+
+    public Taker(String uuid) {
+        setId(UUID.fromString(uuid));
+    }
+
+    public Taker() {
+    }
 }

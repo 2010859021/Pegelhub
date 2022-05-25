@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.Table;
+import java.util.UUID;
 
 @Entity
 @Data
@@ -24,4 +25,11 @@ public class StationManufacturer extends IdentifiableEntity {
     @Column()
     @Lob
     private String stationRemark;
+
+    public StationManufacturer(String uuid) {
+        setId(UUID.fromString(uuid));
+    }
+
+    public StationManufacturer() {
+    }
 }

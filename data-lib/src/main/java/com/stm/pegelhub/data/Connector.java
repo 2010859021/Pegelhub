@@ -2,6 +2,8 @@ package com.stm.pegelhub.data;
 
 import lombok.Data;
 
+import java.util.UUID;
+
 
 @Data
 public class Connector extends IdentifiableEntity {
@@ -14,4 +16,11 @@ public class Connector extends IdentifiableEntity {
     private Contact technicallyResponsible;
     private Contact operatingCompany;
     private String nodes;
+
+    public Connector(String uuid) {
+        setId(UUID.fromString(uuid));
+    }
+
+    public Connector() {
+    }
 }

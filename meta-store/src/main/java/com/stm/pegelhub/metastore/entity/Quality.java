@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.Table;
+import java.util.UUID;
 
 @Entity
 @Data
@@ -17,4 +18,11 @@ public class Quality extends IdentifiableEntity {
     @Column(nullable = false)
     @Lob
     private String plaintext;
+
+    public Quality(String uuid) {
+        setId(UUID.fromString(uuid));
+    }
+
+    public Quality() {
+    }
 }

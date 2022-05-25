@@ -3,6 +3,7 @@ package com.stm.pegelhub.metastore.entity;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.UUID;
 
 
 @Entity
@@ -44,4 +45,11 @@ public class Taker extends IdentifiableEntity {
     @ManyToOne
     @JoinColumn()
     private Contact dataNetworkOperator;
+
+    public Taker(String uuid) {
+        setId(UUID.fromString(uuid));
+    }
+
+    public Taker() {
+    }
 }

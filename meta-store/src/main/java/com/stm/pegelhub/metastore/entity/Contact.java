@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.Table;
+import java.util.UUID;
 
 @Entity
 @Data
@@ -61,4 +62,10 @@ public class Contact extends IdentifiableEntity {
     @Lob
     private String contactNodes;
 
+    public Contact(String id) {
+        setId(UUID.fromString(id));
+    }
+
+    public Contact() {
+    }
 }

@@ -5,6 +5,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.UUID;
 
 
 @Entity
@@ -153,4 +154,10 @@ public class Supplier extends IdentifiableEntity {
     @Column()
     private Double rnq;
 
+    public Supplier(String uuid) {
+        setId(UUID.fromString(uuid));
+    }
+
+    public Supplier() {
+    }
 }

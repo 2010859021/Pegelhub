@@ -7,7 +7,7 @@ import org.springframework.web.client.RestTemplate;
 
 @Configuration
 public class StoreConfiguration {
-    @Bean @LoadBalanced
+    @Bean(name = "metaStoreTemplate") @LoadBalanced
     public RestTemplate metaStoreTemplate() {
         return new RestTemplate();
     }

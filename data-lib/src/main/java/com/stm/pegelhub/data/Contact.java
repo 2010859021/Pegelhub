@@ -2,6 +2,8 @@ package com.stm.pegelhub.data;
 
 import lombok.Data;
 
+import java.util.UUID;
+
 @Data
 public class Contact extends  IdentifiableEntity{
     private String organization;
@@ -21,4 +23,10 @@ public class Contact extends  IdentifiableEntity{
     private String administrationMail;
     private String contactNodes;
 
+    public Contact() {
+    }
+
+    public Contact(String id) {
+        this.setId(UUID.fromString(id));
+    }
 }
