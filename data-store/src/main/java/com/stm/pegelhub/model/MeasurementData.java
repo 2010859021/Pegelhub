@@ -1,38 +1,18 @@
 package com.stm.pegelhub.model;
 
-
-import com.influxdb.annotations.Column;
-import com.influxdb.annotations.Measurement;
 import lombok.Data;
 
 import java.time.Instant;
-import java.util.UUID;
+import java.util.Map;
 
 @Data
-@Measurement(name = "measurementData")
 public class MeasurementData {
 
-    @Column(tag = true)
-    private UUID id;
+    private String measurement;
 
-    @Column(timestamp = true)
     private Instant timestamp;
 
-    @Column(tag = true)
-    private String timetype;
+    private Map<String, Double> fields;
 
-    @Column(tag = true)
-    private String errorCode;
-
-    @Column(tag = true)
-    private String channelUse;
-
-    @Column(tag = true)
-    private String quality;
-
-    @Column(tag = true)
-    private String typ;
-
-    @Column
-    private Double value;
+    private  Map<String, String> infos;
 }
