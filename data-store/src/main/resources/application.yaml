@@ -51,8 +51,8 @@ eureka:
   client:
     serviceUrl:
       defaultZone: ${REGISTRY_URL}
-    registerWithEureka: true
-    fetchRegistry: true
+    registerWithEureka: false
+    fetchRegistry: false
 
 management:
   port: 8081
