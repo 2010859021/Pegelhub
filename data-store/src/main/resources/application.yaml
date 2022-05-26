@@ -25,11 +25,17 @@ security:
     - path: /somepath
       role: somerole
 
-influxDB:
-  url: ${INFLUXDATA_URL}
-  org: ${INFLUXDATA_ORG}
-  bucket: ${INFLUXDATA_BUCKET}
-  token: ${INFLUXDATA_TOKEN}
+datasource:
+  telemetry:
+    url: ${TELEMETRY_STORE_URL}
+    org: ${TELEMETRY_STORE_ORG}
+    bucket: ${TELEMETRY_STORE_BUCKET}
+    token: ${TELEMETRY_STORE_TOKEN}
+  data:
+    url: ${DATA_STORE_URL}
+    org: ${DATA_STORE_ORG}
+    bucket: ${DATA_STORE_BUCKET}
+    token: ${DATA_STORE_TOKEN}
 
 keycloak:
   auth-server-url: ${AUTH_URL}

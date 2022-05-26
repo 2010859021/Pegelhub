@@ -1,16 +1,38 @@
 package com.stm.pegelhub;
 
+import com.influxdb.client.InfluxDBClient;
+import com.influxdb.client.InfluxDBClientFactory;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ConfigurationProperties(prefix = "influxDB")
+@ConfigurationProperties(prefix = "datasource")
 @Data
 public class InfluxDBConfiguration {
+    private DBProps telemetry;
+    private DBProps data;
 
-    private String url;
-    private String org;
-    private String bucket;
-    private String token;
+    @Bean("telemetryClient")
+    public InfluxDBClient telemetryClient() {
+        return telemetry.createClient();
+    }
+
+    @Bean("dataClient")
+    public InfluxDBClient dataClient() {
+        return data.createClient();
+    }
+
+    @Data
+    public static class DBProps {
+        private String url;
+        private String org;
+        private String bucket;
+        private String token;
+
+        private InfluxDBClient createClient() {
+            return InfluxDBClientFactory.create(url, token.toCharArray(), org, bucket);
+        }
+    }
 }
