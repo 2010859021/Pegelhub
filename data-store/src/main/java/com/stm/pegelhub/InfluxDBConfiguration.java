@@ -4,9 +4,9 @@ import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
-@Configuration
-@ConfigurationProperties(prefix = "influxDB")
-@Data
+//@Configuration
+//@ConfigurationProperties(prefix = "influxDB")
+//@Data
 public class InfluxDBConfiguration {
 
     private String url;

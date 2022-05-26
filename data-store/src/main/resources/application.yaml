@@ -25,11 +25,11 @@ security:
     - path: /somepath
       role: somerole
 
-influxDB:
-  url: ${INFLUXDATA_URL}
-  org: ${INFLUXDATA_ORG}
-  bucket: ${INFLUXDATA_BUCKET}
-  token: ${INFLUXDATA_TOKEN}
+#influxDB:
+#  url: ${INFLUXDATA_URL}
+ # org: ${INFLUXDATA_ORG}
+ # bucket: ${INFLUXDATA_BUCKET}
+ # token: ${INFLUXDATA_TOKEN}
 
 keycloak:
   auth-server-url: ${AUTH_URL}
@@ -45,8 +45,8 @@ eureka:
   client:
     serviceUrl:
       defaultZone: ${REGISTRY_URL}
-    registerWithEureka: true
-    fetchRegistry: true
+    registerWithEureka: false
+    fetchRegistry: false
 
 management:
   port: 8081

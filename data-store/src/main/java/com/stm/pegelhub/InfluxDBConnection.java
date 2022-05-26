@@ -8,6 +8,9 @@ import com.influxdb.exceptions.InfluxException;
 import com.influxdb.client.write.Point;
 import com.influxdb.query.FluxRecord;
 import com.influxdb.query.FluxTable;
+import com.stm.pegelhub.model.DataPoint;
+import com.stm.pegelhub.model.MeasurementData;
+import com.stm.pegelhub.model.TelemetryData;
 import lombok.Data;
 
 import java.time.Instant;
@@ -30,23 +33,13 @@ public class InfluxDBConnection {
         return InfluxDBClientFactory.create(getUrl(), getToken().toCharArray(), getOrg(), getBucket());
     }
 
-    public boolean writePointbyPOJO(InfluxDBClient influxDBClient) {
+    public boolean writePointbyPOJO(InfluxDBClient influxDBClient, TelemetryData telemetryData) {
         boolean flag = false;
         try {
             WriteApiBlocking writeApi = influxDBClient.getWriteApiBlocking();
 
-            MeasurementData measurementData = new MeasurementData();
-            measurementData.setId(UUID.randomUUID());
-            measurementData.setTimestamp(Instant.now());
-            measurementData.setTimetype("W");
-            measurementData.setErrorCode("0x90");
-            measurementData.setChannelUse("0Q");
-            measurementData.setQuality("000");
-            measurementData.setTyp("Test");
-            measurementData.setValue(233.81);
-
             // writeApi.writeRecord(bucket, org, WritePrecision.NS, measurementData);
-            writeApi.writeMeasurement(WritePrecision.MS, measurementData);
+            writeApi.writeMeasurement(WritePrecision.MS, telemetryData);
             flag = true;
         } catch (
 
@@ -56,11 +49,33 @@ public class InfluxDBConnection {
         return flag;
     }
 
-    public boolean writePointbyPoint(InfluxDBClient influxDBClient) {
+    public boolean writePointbyPoint(InfluxDBClient influxDBClient, DataPoint dataPoint) {
         boolean flag = false;
         try {
 
             WriteApiBlocking writeApi = influxDBClient.getWriteApiBlocking();
+
+//measurementData
+            Point measurementData = Point.measurement(UUID.randomUUID().toString())
+                    .addTag("timeType", "S")
+                    .addTag("error", "0x80")
+                    .addTag("quality", "000")
+                    .addField("0P", 15.7)
+                    .addField("0Q", 18.3)
+                    .time(Instant.now(), WritePrecision.MS);
+
+            Point telemetryData = Point.measurement(UUID.randomUUID().toString())
+                    .addTag("stationIPAddressIntern", "192.158.1.38")
+                    .addTag("stationIPAddressExtern", "10.10.1.38")
+                    .addField("cycleTime", 10)
+                    .addField("temperatureWater", 22.8)
+                    .addField("temperatureAir", 30.5)
+                    .addField("performanceVoltageBattery", 13.6)
+                    .addField("performanceVoltageSupply", 10.0)
+                    .addField("performanceElectricityBattery", -3.323)
+                    .addField("performanceElectricitySupply", 7.321)
+                    .addField("fieldStrengthTransmission", -74.0)
+                    .time(Instant.now(), WritePrecision.MS);
 
             Point point = Point.measurement("measurementData").addTag("Id", UUID.randomUUID().toString())
                     .addTag("timetype", "S")
@@ -80,23 +95,20 @@ public class InfluxDBConnection {
         return flag;
     }
 
-    public void queryData(InfluxDBClient influxDBClient) {
-        String query = "from(bucket: \"Pegelhub\") |> range(start: -1h)";
-        // from(bucket: "myFirstBucket")
-        // |> range(start: v.timeRangeStart, stop: v.timeRangeStop)
-        // |> filter(fn: (r) => r["_measurement"] == "sensor")
-        // |> filter(fn: (r) => r["_field"] == "model_number")
-        // |> filter(fn: (r) => r["sensor_id"] == "TLM0100" or r["sensor_id"] ==
-        // "TLM0101" or r["sensor_id"] == "TLM0103" or r["sensor_id"] == "TLM0200")
-        // |> sort()
-        // |> yield(name: "sort")
+    public void queryData(InfluxDBClient influxDBClient, String query) {
 
-        List<FluxTable> tables = influxDBClient.getQueryApi().query(query, org);
+        List<FluxTable> tables = influxDBClient.getQueryApi().query(query, this.org);
+        //influxDBClient.getQueryApi().
 
         for (FluxTable table : tables) {
             for (FluxRecord record : table.getRecords()) {
                 System.out.println(record);
+                System.out.println(record.getTime().toString() + " " + record.getValueByKey("_field") );
             }
         }
+    }
+
+    private void disposeClient(){
+
     }
 }

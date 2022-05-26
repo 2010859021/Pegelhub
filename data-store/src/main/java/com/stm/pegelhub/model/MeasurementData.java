@@ -1,4 +1,4 @@
-package com.stm.pegelhub;
+package com.stm.pegelhub.model;
 
 
 import com.influxdb.annotations.Column;
@@ -6,7 +6,6 @@ import com.influxdb.annotations.Measurement;
 import lombok.Data;
 
 import java.time.Instant;
-import java.util.Date;
 import java.util.UUID;
 
 @Data
