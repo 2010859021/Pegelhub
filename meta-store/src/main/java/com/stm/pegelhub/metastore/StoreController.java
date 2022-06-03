@@ -19,8 +19,8 @@ public class StoreController {
     @Autowired
     private EntityHandlerService handlerService;
 
-    private Class<? extends IdentifiableEntity> getEntityClass(String name) throws ClassNotFoundException {
-        return (Class<? extends IdentifiableEntity>) Class.forName("com.stm.pegelhub.metastore.entity." + name);
+    private Class<?> getEntityClass(String name) throws ClassNotFoundException {
+        return Class.forName("com.stm.pegelhub.metastore.entity." + name);
     }
 
     @GetMapping("/")
@@ -29,28 +29,30 @@ public class StoreController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<? extends IdentifiableEntity> saveEntity(@PathVariable("class") String entityClass, @RequestBody String objectRaw) throws ClassNotFoundException, IOException {
+    public ResponseEntity<?> saveEntity(@PathVariable("class") String entityClass, @RequestBody String objectRaw) throws ClassNotFoundException, IOException {
         ObjectMapper parser = new ObjectMapper();
-        IdentifiableEntity t = (IdentifiableEntity) parser.readValue(objectRaw, getEntityClass(entityClass));
-        t.setId(UUID.randomUUID());
+        Object t = parser.readValue(objectRaw, getEntityClass(entityClass));
+        if (t instanceof IdentifiableEntity) {
+            ((IdentifiableEntity) t).setId(UUID.randomUUID());
+        }
         return ResponseEntity.ok(handlerService.persist(t));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<? extends IdentifiableEntity> updateEntity(@PathVariable("class") String entityClass, @PathVariable("id") UUID id, @RequestBody String objectRaw) throws ClassNotFoundException, IOException {
+    public ResponseEntity<?> updateEntity(@PathVariable("class") String entityClass, @PathVariable("id") String id, @RequestBody String objectRaw) throws ClassNotFoundException, IOException {
         ObjectMapper parser = new ObjectMapper();
         IdentifiableEntity t = (IdentifiableEntity) parser.readValue(objectRaw, getEntityClass(entityClass));
-        t.setId(id);
+        t.setId(UUID.fromString(id));
         return ResponseEntity.ok(handlerService.persist(t));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<? extends IdentifiableEntity> findEntityById(@PathVariable("class") String entityClass, @PathVariable("id") UUID id) throws ClassNotFoundException, IOException {
+    public ResponseEntity<?> findEntityById(@PathVariable("class") String entityClass, @PathVariable("id") String id) throws ClassNotFoundException, IOException {
         return ResponseEntity.ok(handlerService.findById(getEntityClass(entityClass), id));
     }
 
     @DeleteMapping ("/{id}")
-    public void deleteEntityById(@PathVariable("class") String entityClass, @PathVariable("id") UUID id) throws ClassNotFoundException, IOException {
+    public void deleteEntityById(@PathVariable("class") String entityClass, @PathVariable("id") String id) throws ClassNotFoundException, IOException {
         handlerService.delete(getEntityClass(entityClass), id);
     }
 }

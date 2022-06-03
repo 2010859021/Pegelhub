@@ -1,6 +1,7 @@
 package com.stm.pegelhub.metastore;
 
 import com.stm.pegelhub.metastore.entity.*;
+import com.stm.pegelhub.metastore.entity.Error;
 import com.stm.pegelhub.metastore.store.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -17,6 +18,7 @@ import java.util.UUID;
 @Service
 public class EntityHandlerService {
     private Map<Class<? extends IdentifiableEntity>, JpaRepository<? extends IdentifiableEntity, UUID>> baseEntityRepositories;
+    private ErrorHandlerService errorHandlerService;
 
     @Autowired
     public EntityHandlerService(
@@ -27,8 +29,10 @@ public class EntityHandlerService {
             StationManufacturerRepository stationManufacturerRepository,
             SupplierRepository supplierRepository,
             TakerRepository takerRepository,
-            TakerServiceManufacturerRepository takerServiceManufacturerRepository
+            TakerServiceManufacturerRepository takerServiceManufacturerRepository,
+            ErrorHandlerService errorHandlerService
     ) {
+        this.errorHandlerService = errorHandlerService;
         this.baseEntityRepositories = Map.of(
                 Connector.class, connectorRepository,
                 Contact.class, contactRepository,
@@ -46,23 +50,41 @@ public class EntityHandlerService {
             return baseEntityRepositories.get(entityClass).findAll();
         }
 
+        if (Error.class.isAssignableFrom(entityClass)) {
+            return errorHandlerService.getAll();
+        }
+
         return new ArrayList<>();
     }
 
-    public <T extends IdentifiableEntity> T findById(Class<T> type, UUID id) {
-        return (T) baseEntityRepositories.get(type).findById(id).orElse(null);
+    public <T> T findById(Class<T> type, String id) {
+        if (Error.class.isAssignableFrom(type)) {
+            return (T) errorHandlerService.get(id);
+        }
+
+        return (T) baseEntityRepositories.get(type).findById(UUID.fromString(id)).orElse(null);
     }
 
-    public <T extends IdentifiableEntity> T persist(T t) {
+    public <T> T persist(T t) {
         if (t == null) {
             throw new RuntimeException("Cannot save null object!");
+        }
+
+        if (Error.class.isAssignableFrom(t.getClass())) {
+            return (T) errorHandlerService.save((Error) t);
         }
 
         JpaRepository<T, UUID> repository = (JpaRepository<T, UUID>) baseEntityRepositories.get(t.getClass());
         return repository.save(t);
     }
 
-    public void delete(Class<? extends IdentifiableEntity> type, UUID idToDelete) {
-        baseEntityRepositories.get(type).deleteById(idToDelete);
+    public void delete(Class<?> type, String idToDelete) {
+        if (baseEntityRepositories.containsKey(type)) {
+            baseEntityRepositories.get(type).deleteById(UUID.fromString(idToDelete));
+        }
+
+        if (Error.class.isAssignableFrom(type)) {
+            errorHandlerService.delete(idToDelete);
+        }
     }
 }
