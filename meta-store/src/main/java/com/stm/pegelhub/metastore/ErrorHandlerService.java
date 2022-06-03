@@ -30,6 +30,8 @@ public class ErrorHandlerService {
     }
 
     public Error save(Error error) {
+        System.out.println(error);
+
         return repository.save(error);
     }
 

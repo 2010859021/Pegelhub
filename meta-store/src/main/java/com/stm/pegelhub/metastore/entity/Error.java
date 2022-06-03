@@ -9,9 +9,10 @@ import java.util.UUID;
 
 @Entity
 @Data
-@Table(name="Error")
+@Table(name = "Error")
 public class Error {
-    @EmbeddedId @JsonIgnore
+    @EmbeddedId
+    @JsonIgnore
     private ErrorPrimaryKey primaryKey;
 
     @Lob
@@ -22,6 +23,15 @@ public class Error {
     @JoinColumn(nullable = false)
     @MapsId("takerServiceManufacturerId")
     private TakerServiceManufacturer takerServiceManufacturer;
+
+    public Error(UUID takerServiceManufacturer, String errorCode) {
+        this.primaryKey = new ErrorPrimaryKey();
+        this.setTakerServiceManufacturer(new TakerServiceManufacturer(takerServiceManufacturer.toString()));
+        this.setErrorCode(errorCode);
+    }
+
+    public Error() {
+    }
 
     public String getErrorCode() {
         return primaryKey.getErrorCode();
@@ -36,14 +46,25 @@ public class Error {
         this.primaryKey.setErrorCode(errorCode);
     }
 
-    public void setTakerServiceManufacturer(UUID uuid) {
-        if (primaryKey == null) this.primaryKey = new ErrorPrimaryKey();
-        this.primaryKey.setTakerServiceManufacturerId(uuid);
-        this.takerServiceManufacturer = new TakerServiceManufacturer();
-        this.takerServiceManufacturer.setId(uuid);
+//    public void setTakerServiceManufacturer(UUID uuid) {
+//        if (primaryKey == null) this.primaryKey = new ErrorPrimaryKey();
+//        this.primaryKey.setTakerServiceManufacturerId(uuid);
+//        this.takerServiceManufacturer = new TakerServiceManufacturer();
+//        this.takerServiceManufacturer.setId(uuid);
+//    }
+
+    public void setPlaintext(String plaintext) {
+        this.plaintext = plaintext;
     }
 
-    @Embeddable @Data
+    public void setTakerServiceManufacturer(TakerServiceManufacturer takerServiceManufacturer) {
+        this.takerServiceManufacturer = takerServiceManufacturer;
+        if (primaryKey == null) this.primaryKey = new ErrorPrimaryKey();
+        this.primaryKey.setTakerServiceManufacturerId(takerServiceManufacturer.getId());
+    }
+
+    @Embeddable
+    @Data
     public static final class ErrorPrimaryKey implements Serializable {
         private String errorCode;
 

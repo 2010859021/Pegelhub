@@ -1,29 +1,41 @@
 package com.stm.pegelhub.connectormanagement.Error;
 
 import com.stm.pegelhub.data.Error;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
+@RequestMapping("/error")
 public class ErrorController {
-    @PostMapping("/error")
-    void createError(Error error){
+    @Autowired
+    ErrorService errorService;
 
+    @GetMapping("/")
+    public List<Error> findAll() {
+        return errorService.findAll();
     }
 
-    @GetMapping("/error")
-    void getError(UUID id){
-
+    @PostMapping("/")
+    public Error createError(@RequestBody Error error) {
+        return errorService.save(error);
     }
 
-    @PutMapping("/error")
-    void updateError(Error error){
-
+    @GetMapping("/{id}")
+    public Error getError(@PathVariable String id) {
+        return errorService.findById(id);
     }
 
-    @DeleteMapping("/error")
-    void deleteError(UUID id){
+    @PutMapping("/{id}")
+    public void updateError(@RequestBody Error error, @PathVariable String id) {
+        error.updateFromId(id);
+        errorService.save(error);
+    }
 
+    @DeleteMapping("/{id}")
+    public void deleteError(@PathVariable String id) {
+        errorService.delete(Error.createFromId(id));
     }
 }

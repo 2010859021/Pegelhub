@@ -41,8 +41,10 @@ public class StoreController {
     @PutMapping("/{id}")
     public ResponseEntity<?> updateEntity(@PathVariable("class") String entityClass, @PathVariable("id") String id, @RequestBody String objectRaw) throws ClassNotFoundException, IOException {
         ObjectMapper parser = new ObjectMapper();
-        IdentifiableEntity t = (IdentifiableEntity) parser.readValue(objectRaw, getEntityClass(entityClass));
-        t.setId(UUID.fromString(id));
+        Object t = parser.readValue(objectRaw, getEntityClass(entityClass));
+        if (t instanceof IdentifiableEntity) {
+            ((IdentifiableEntity) t).setId(UUID.fromString(id));
+        }
         return ResponseEntity.ok(handlerService.persist(t));
     }
 
