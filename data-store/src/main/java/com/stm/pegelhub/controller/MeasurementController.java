@@ -32,9 +32,9 @@ public class MeasurementController {
     }
 
     @PostMapping
-    public ResponseEntity writeMeasurementData(@RequestBody MeasurementData telemetryDataData) {
+    public ResponseEntity writeMeasurementData(@RequestBody MeasurementData measurementData) {
 
-        MeasurementData responseDataPoint = service.writeTelemetryData(telemetryDataData);
+        MeasurementData responseDataPoint = service.writeDataPoint(measurementData);
         return ResponseEntity.ok(responseDataPoint);
     }
 }

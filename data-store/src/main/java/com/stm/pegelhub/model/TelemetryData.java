@@ -3,6 +3,7 @@ package com.stm.pegelhub.model;
 import lombok.Data;
 
 import java.time.Instant;
+import java.util.Date;
 import java.util.UUID;
 
 
@@ -15,7 +16,7 @@ public class TelemetryData {
 
     private String stationIPAddressExtern;
 
-    private Instant timestamp;
+    private Date timestamp;
 
     private Integer cycleTime;
 

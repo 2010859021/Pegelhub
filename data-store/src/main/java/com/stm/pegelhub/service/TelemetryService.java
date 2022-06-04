@@ -4,6 +4,7 @@ import com.influxdb.client.InfluxDBClient;
 
 import com.influxdb.client.domain.WritePrecision;
 import com.influxdb.client.write.Point;
+import com.stm.pegelhub.InfluxDBConfiguration;
 import com.stm.pegelhub.InfluxDBConnection;
 
 import com.stm.pegelhub.model.TelemetryData;
@@ -24,9 +25,13 @@ public class TelemetryService {
     private String org;
     private  String url;
 
+//    public  TelemetryService (){
+//        this.client = new InfluxDBConfiguration().dataClient();
+//
+//    }
     public TelemetryData writeTelemetryData(TelemetryData telemetryDataPoint) {
 
-        Point telemetryData = Point.measurement(UUID.randomUUID().toString())
+        Point telemetryData = Point.measurement(telemetryDataPoint.getMeasurement())
                 .addTag("stationIPAddressIntern", telemetryDataPoint.getStationIPAddressIntern())
                 .addTag("stationIPAddressExtern", telemetryDataPoint.getStationIPAddressExtern())
                 .addField("cycleTime", telemetryDataPoint.getCycleTime())
@@ -37,13 +42,13 @@ public class TelemetryService {
                 .addField("performanceElectricityBattery", telemetryDataPoint.getPerformanceElectricityBattery())
                 .addField("performanceElectricitySupply", telemetryDataPoint.getPerformanceElectricitySupply())
                 .addField("fieldStrengthTransmission", telemetryDataPoint.getFieldStrengthTransmission())
-                .time(telemetryDataPoint.getTimestamp(), WritePrecision.MS);
+                .time(Instant.now(), WritePrecision.MS);
 
         if(this.inConn == null || this.client == null){
             this.buildConnection();
         }
         boolean resultPoint = this.inConn.writePointbyPoint(this.client, telemetryData);
-        this.client.close();
+
         if (resultPoint) {
             return telemetryDataPoint;
         } else {

@@ -3,6 +3,7 @@ package com.stm.pegelhub;
 import com.influxdb.client.InfluxDBClient;
 import com.influxdb.client.InfluxDBClientFactory;
 import com.influxdb.client.WriteApiBlocking;
+import com.influxdb.client.domain.ObjectExpression;
 import com.influxdb.client.domain.WritePrecision;
 import com.influxdb.exceptions.InfluxException;
 import com.influxdb.client.write.Point;
@@ -11,6 +12,8 @@ import com.influxdb.query.FluxTable;
 import com.stm.pegelhub.model.TelemetryData;
 import lombok.Data;
 
+import java.time.Instant;
+import java.util.HashMap;
 import java.util.List;
 
 @Data
@@ -50,7 +53,7 @@ public class InfluxDBConnection {
         try {
 
             WriteApiBlocking writeApi = influxDBClient.getWriteApiBlocking();
-            writeApi.writePoint(dataPoint);
+            writeApi.writePoint(this.bucket, this.org, dataPoint);
             flag = true;
 
         } catch (InfluxException e) {
@@ -60,18 +63,39 @@ public class InfluxDBConnection {
     }
 
     public void queryData(InfluxDBClient influxDBClient, String query) {
-
         List<FluxTable> tables = influxDBClient.getQueryApi().query(query, this.org);
 
+        HashMap<String, HashMap<String, HashMap<String, Object>>> points = new HashMap<>();
+        //     measurement,    timestamp,        field,   value
         for (FluxTable table : tables) {
+
             for (FluxRecord record : table.getRecords()) {
-                System.out.println(record);
-              //  System.out.println(record.getTime().toString() + " " + record.getValueByKey("_field") );
+
+                var time = record.getTime().toString();
+                var measurement = record.getMeasurement();
+                var field = record.getField();
+              //  var tag = record.getField().
+                var value = record.getValue();
+
+                HashMap<String, HashMap<String, Object>> valuesTime = new HashMap<>();
+                HashMap<String, Object> fieldValue = new HashMap<>();
+                fieldValue.put(field, value);
+                valuesTime.put(time, fieldValue);
+
+                if(!points.containsKey(measurement) ){
+                    points.put(measurement, valuesTime);
+                } else if(points.containsKey(measurement) && !points.get(measurement).containsKey(time)){
+                    points.get(measurement).put(time,fieldValue);
+                } else  if (points.containsKey(measurement) && points.get(measurement).containsKey(time)){
+                    points.get(measurement).get(time).put(field, value);
+                }
+
             }
         }
+        System.out.println(points);
     }
 
-    private void disposeClient(){
+    private void disposeClient() {
 
 
     }
