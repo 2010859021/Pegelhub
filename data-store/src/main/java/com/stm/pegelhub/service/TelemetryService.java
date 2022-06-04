@@ -25,10 +25,6 @@ public class TelemetryService {
     private String org;
     private  String url;
 
-//    public  TelemetryService (){
-//        this.client = new InfluxDBConfiguration().dataClient();
-//
-//    }
     public TelemetryData writeTelemetryData(TelemetryData telemetryDataPoint) {
 
         Point telemetryData = Point.measurement(telemetryDataPoint.getMeasurement())

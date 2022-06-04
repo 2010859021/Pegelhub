@@ -11,13 +11,18 @@ import com.influxdb.query.FluxRecord;
 import com.influxdb.query.FluxTable;
 import com.stm.pegelhub.model.TelemetryData;
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.List;
 
 @Data
+@Service
 public class InfluxDBConnection {
+  /*  @Autowired
+    private InfluxDBConfiguration.DBProps */
 
     private String token;
     private String bucket;
@@ -53,7 +58,8 @@ public class InfluxDBConnection {
         try {
 
             WriteApiBlocking writeApi = influxDBClient.getWriteApiBlocking();
-            writeApi.writePoint(this.bucket, this.org, dataPoint);
+           // writeApi.writePoint(this.bucket, this.org, dataPoint);
+            writeApi.writePoint( dataPoint);
             flag = true;
 
         } catch (InfluxException e) {
@@ -63,7 +69,7 @@ public class InfluxDBConnection {
     }
 
     public void queryData(InfluxDBClient influxDBClient, String query) {
-        List<FluxTable> tables = influxDBClient.getQueryApi().query(query, this.org);
+        List<FluxTable> tables = influxDBClient.getQueryApi().query(query);
 
         HashMap<String, HashMap<String, HashMap<String, Object>>> points = new HashMap<>();
         //     measurement,    timestamp,        field,   value
@@ -74,9 +80,12 @@ public class InfluxDBConnection {
                 var time = record.getTime().toString();
                 var measurement = record.getMeasurement();
                 var field = record.getField();
+                var tags = record.getValues();
+
               //  var tag = record.getField().
                 var value = record.getValue();
 
+                //putifabsent
                 HashMap<String, HashMap<String, Object>> valuesTime = new HashMap<>();
                 HashMap<String, Object> fieldValue = new HashMap<>();
                 fieldValue.put(field, value);
