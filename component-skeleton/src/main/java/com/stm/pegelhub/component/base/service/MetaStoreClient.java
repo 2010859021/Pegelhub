@@ -30,12 +30,21 @@ public class MetaStoreClient {
 
     public IdentifiableEntity save(IdentifiableEntity data) {
         try {
-            return connector.exchange(
-                    buildUrl(data),
-                    data.getId() != null ? HttpMethod.PUT : HttpMethod.POST,
-                    new HttpEntity<>(data),
-                    data.getClass()
-            ).getBody();
+            if (data.getId() != null) {
+                return connector.exchange(
+                        buildUrl(data) + data.getId(),
+                        HttpMethod.PUT,
+                        new HttpEntity<>(data),
+                        data.getClass()
+                ).getBody();
+            } else {
+                return connector.exchange(
+                        buildUrl(data),
+                        HttpMethod.POST,
+                        new HttpEntity<>(data),
+                        data.getClass()
+                ).getBody();
+            }
         } catch (Exception e) {
             throw new MetaStoreException(e);
         }
