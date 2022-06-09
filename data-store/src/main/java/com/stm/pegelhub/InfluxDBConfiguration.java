@@ -24,6 +24,16 @@ public class InfluxDBConfiguration {
         return data.createClient();
     }
 
+    @Bean("telemetryConfiguration")
+    public DBProps telemetryConfiguration() {
+        return this.telemetry;
+    }
+
+    @Bean("dataConfiguration")
+    public DBProps dataConfiguration() {
+        return this.data;
+    }
+
     @Data
     public static class DBProps {
         private String url;
