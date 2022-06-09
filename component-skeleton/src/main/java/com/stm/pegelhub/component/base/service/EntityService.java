@@ -92,7 +92,7 @@ public abstract class EntityService<T extends IdentifiableEntity> {
             repository.delete(entity);
             onAfterSave(entity);
         }
-        throw new InvalidEntityException(entity);
+        else throw new InvalidEntityException(entity);
     }
 
     /**
