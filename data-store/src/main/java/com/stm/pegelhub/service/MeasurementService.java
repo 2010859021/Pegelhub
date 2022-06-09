@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -24,7 +25,7 @@ public class MeasurementService {
 
     public MeasurementData writeDataPoint(MeasurementData dataPoint) {
 
-        Point measurementData = Point.measurement(dataPoint.getMeasurement()).time(Instant.now(), WritePrecision.MS);
+        Point measurementData = Point.measurement(dataPoint.getMeasurement()).time(Instant.parse(dataPoint.getTimestamp()), WritePrecision.MS);
 
         for (Map.Entry<String, String> entry: dataPoint.getInfos().entrySet()) {
             measurementData.addTag(entry.getKey(), entry.getValue());
@@ -42,18 +43,18 @@ public class MeasurementService {
         }
     }
 
-    public List<MeasurementData> queryData(String range) {
+    public Object queryData(String range) {
         String query = "from(bucket: \"MeasurementData\") |> range(start: -" + range +")";
 
-        this.inConn.queryData(this.client, query);
+     var points =   this.inConn.queryData(this.client, query);
 
-        return  null;
+        return  points;
     }
 
-    public Object queryLastData(String uuiId) {String query = "from(bucket: \"MeasurementData\") |> range(start: -72h) |> filter(fn: (r) => r._measurement == \"" + uuiId +" \") |> first()";
+    public Object queryLastData(String uuiId) {String query = "from(bucket: \"MeasurementData\") |> range(start: -72h) |> filter(fn: (r) => r._measurement == \"" + uuiId +"\") |> first()";
 
-        this.inConn.queryData(this.client, query);
+        var point =  this.inConn.queryData(this.client, query);
 
-        return  null;
+        return  point;
     }
 }

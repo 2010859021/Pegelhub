@@ -16,7 +16,7 @@ public class TelemetryData {
 
     private String stationIPAddressExtern;
 
-    private Date timestamp;
+    private String timestamp;
 
     private Integer cycleTime;
 

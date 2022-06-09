@@ -59,10 +59,12 @@ public class InfluxDBConnection {
         } catch (InfluxException e) {
             System.out.println("Exception!!" + e.getMessage());
         }
+
+
         return flag;
     }
 
-    public void queryData(InfluxDBClient influxDBClient, String query) {
+    public HashMap<String, HashMap<String, HashMap<String, Object>>>  queryData(InfluxDBClient influxDBClient, String query) {
         List<FluxTable> tables = influxDBClient.getQueryApi().query(query);
 
         HashMap<String, HashMap<String, HashMap<String, Object>>> points = new HashMap<>();
@@ -101,6 +103,8 @@ public class InfluxDBConnection {
 
             }
         }
+
+        return points;
     }
 
     private void disposeClient() {

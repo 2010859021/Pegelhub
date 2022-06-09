@@ -35,6 +35,9 @@ public class MeasurementController {
     public ResponseEntity writeMeasurementData(@RequestBody MeasurementData measurementData) {
 
         MeasurementData responseDataPoint = service.writeDataPoint(measurementData);
+        if(responseDataPoint == null){
+            return ResponseEntity.status(400).body("Failed to post");
+        }
         return ResponseEntity.ok(responseDataPoint);
     }
 }

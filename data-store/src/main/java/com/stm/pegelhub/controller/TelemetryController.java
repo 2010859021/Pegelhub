@@ -42,6 +42,10 @@ public class TelemetryController {
     public ResponseEntity writeTelemetryData(@RequestBody TelemetryData telemetryData) {
 
         TelemetryData responseDataPoint = service.writeTelemetryData(telemetryData);
+
+        if(responseDataPoint == null){
+            return ResponseEntity.status(400).body("Failed to post");
+        }
         return ResponseEntity.ok(responseDataPoint);
     }
 }

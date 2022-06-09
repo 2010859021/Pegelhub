@@ -11,7 +11,7 @@ public class MeasurementData {
 
     private String measurement;
 
-    private Date timestamp;
+    private String timestamp;
 
     private Map<String, Double> fields;
 
