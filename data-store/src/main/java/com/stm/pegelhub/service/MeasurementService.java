@@ -1,22 +1,17 @@
 package com.stm.pegelhub.service;
 
 import com.influxdb.client.InfluxDBClient;
-import com.influxdb.client.InfluxDBClientOptions;
 import com.influxdb.client.domain.WritePrecision;
 import com.influxdb.client.write.Point;
-import com.stm.pegelhub.InfluxDBConfiguration;
 import com.stm.pegelhub.InfluxDBConnection;
 import com.stm.pegelhub.model.MeasurementData;
-import com.stm.pegelhub.model.TelemetryData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 @Service
 public class MeasurementService {
