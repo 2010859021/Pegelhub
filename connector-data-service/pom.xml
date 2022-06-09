@@ -27,6 +27,12 @@
             <artifactId>component-skeleton</artifactId>
             <version>2022.01</version>
         </dependency>
+        <dependency>
+            <groupId>com.stm.pegelhub</groupId>
+            <artifactId>data-store</artifactId>
+            <version>2022.01</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
     <artifactId>connector-data-service</artifactId>
