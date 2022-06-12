@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -25,6 +26,7 @@ public class ContactController extends EntityController<Contact> {
                     content = { @Content(mediaType = "application/json", schema = @Schema(implementation = Contact.class))})
     })
     @PostMapping("/")
+    @PreAuthorize("hasRole('PH_USER')")
     Contact createContact(@RequestBody Contact contact){
         return super.dataService.save(contact);
     }
@@ -35,6 +37,7 @@ public class ContactController extends EntityController<Contact> {
                     content = { @Content(mediaType = "application/json", schema = @Schema(implementation = Contact.class))})
     })
     @GetMapping("/{uuid}")
+    @PreAuthorize("hasRole('PH_USER')")
     Contact getContactById(@PathVariable UUID uuid){
         Contact searchObj = new Contact();
         searchObj.setId(uuid);
@@ -47,6 +50,7 @@ public class ContactController extends EntityController<Contact> {
                     content = { @Content(mediaType = "application/json", schema = @Schema(implementation = Contact.class))})
     })
     @GetMapping("/")
+    @PreAuthorize("hasRole('PH_USER')")
     List<Contact> getAllContacts() {
         return super.dataService.findAll();
     }
@@ -57,6 +61,7 @@ public class ContactController extends EntityController<Contact> {
                     content = { @Content(mediaType = "application/json", schema = @Schema(implementation = Contact.class))})
     })
     @PutMapping("/")
+    @PreAuthorize("hasRole('PH_USER')")
     Contact updateContact(@RequestBody Contact contact){
         return super.dataService.save(contact);
     }
@@ -66,6 +71,7 @@ public class ContactController extends EntityController<Contact> {
             @ApiResponse(responseCode = "200")
     })
     @DeleteMapping("/{uuid:UUID}")
+    @PreAuthorize("hasRole('PH_USER')")
     void deleteContact(@PathVariable UUID uuid){
         super.dataService.delete(getContactById(uuid));
     }

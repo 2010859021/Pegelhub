@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -25,6 +26,7 @@ public class FunctionModuleController extends EntityController<FunctionModule> {
                     content = { @Content(mediaType = "application/json", schema = @Schema(implementation = FunctionModule.class))})
     })
     @PostMapping("/")
+    @PreAuthorize("hasRole('PH_USER')")
     FunctionModule createFunctionModule(@RequestBody FunctionModule functionModule){
         return super.dataService.save(functionModule);
     }
@@ -35,6 +37,7 @@ public class FunctionModuleController extends EntityController<FunctionModule> {
                     content = { @Content(mediaType = "application/json", schema = @Schema(implementation = FunctionModule.class))})
     })
     @GetMapping("/{uuid}")
+    @PreAuthorize("hasRole('PH_USER')")
     FunctionModule getFunctionModuleById(@PathVariable UUID uuid){
         FunctionModule searchObj = new FunctionModule();
         searchObj.setId(uuid);
@@ -47,6 +50,7 @@ public class FunctionModuleController extends EntityController<FunctionModule> {
                     content = { @Content(mediaType = "application/json", schema = @Schema(implementation = FunctionModule.class))})
     })
     @GetMapping("/")
+    @PreAuthorize("hasRole('PH_USER')")
     List<FunctionModule> getAllFunctionModules() {
         return super.dataService.findAll();
     }
@@ -57,6 +61,7 @@ public class FunctionModuleController extends EntityController<FunctionModule> {
                     content = { @Content(mediaType = "application/json", schema = @Schema(implementation = FunctionModule.class))})
     })
     @PutMapping("/")
+    @PreAuthorize("hasRole('PH_USER')")
     FunctionModule updateFunctionModule(@RequestBody FunctionModule functionModule){
         return super.dataService.save(functionModule);
     }
@@ -66,6 +71,7 @@ public class FunctionModuleController extends EntityController<FunctionModule> {
             @ApiResponse(responseCode = "200")
     })
     @DeleteMapping("/{uuid:UUID}")
+    @PreAuthorize("hasRole('PH_USER')")
     void deleteFunctionModule(@PathVariable UUID uuid){
         super.dataService.delete(getFunctionModuleById(uuid));
     }

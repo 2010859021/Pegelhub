@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -24,6 +25,7 @@ public class SupplierController extends EntityController<Supplier> {
                     content = { @Content(mediaType = "application/json", schema = @Schema(implementation = Supplier.class))})
     })
     @PostMapping("/")
+    @PreAuthorize("hasRole('PH_USER')")
     Supplier createSupplier(@RequestBody Supplier supplier) {
         return super.dataService.save(supplier);
     }
@@ -34,6 +36,7 @@ public class SupplierController extends EntityController<Supplier> {
                     content = { @Content(mediaType = "application/json", schema = @Schema(implementation = Supplier.class))})
     })
     @GetMapping("/{uuid}")
+    @PreAuthorize("hasRole('PH_USER')")
     Supplier getSupplierById(@PathVariable UUID uuid) {
         Supplier searchObj = new Supplier();
         searchObj.setId(uuid);
@@ -46,6 +49,7 @@ public class SupplierController extends EntityController<Supplier> {
                     content = { @Content(mediaType = "application/json", schema = @Schema(implementation = Supplier.class))})
     })
     @GetMapping("/")
+    @PreAuthorize("hasRole('PH_USER')")
     List<Supplier> getAllSuppliers() {
         return super.dataService.findAll();
     }
@@ -56,6 +60,7 @@ public class SupplierController extends EntityController<Supplier> {
                     content = { @Content(mediaType = "application/json", schema = @Schema(implementation = Supplier.class))})
     })
     @PutMapping("/")
+    @PreAuthorize("hasRole('PH_USER')")
     Supplier updateSupplier(@RequestBody Supplier supplier) {
         return super.dataService.save(supplier);
     }
@@ -65,6 +70,7 @@ public class SupplierController extends EntityController<Supplier> {
             @ApiResponse(responseCode = "200")
     })
     @DeleteMapping("/{uuid:UUID}")
+    @PreAuthorize("hasRole('PH_USER')")
     void deleteSupplier(@PathVariable UUID uuid) {
         super.dataService.delete(getSupplierById(uuid));
     }

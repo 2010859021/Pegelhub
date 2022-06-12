@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -24,6 +25,7 @@ public class StationManufacturerController extends EntityController<StationManuf
                     content = { @Content(mediaType = "application/json", schema = @Schema(implementation = StationManufacturer.class))})
     })
     @PostMapping("/")
+    @PreAuthorize("hasRole('PH_USER')")
     StationManufacturer createStationManufacturer(@RequestBody StationManufacturer stationManufacturer){
         return super.dataService.save(stationManufacturer);
     }
@@ -34,6 +36,7 @@ public class StationManufacturerController extends EntityController<StationManuf
                     content = { @Content(mediaType = "application/json", schema = @Schema(implementation = StationManufacturer.class))})
     })
     @GetMapping("/{uuid}")
+    @PreAuthorize("hasRole('PH_USER')")
     StationManufacturer getStationManufacturerById(@PathVariable UUID uuid){
         StationManufacturer searchObj = new StationManufacturer();
         searchObj.setId(uuid);
@@ -46,6 +49,7 @@ public class StationManufacturerController extends EntityController<StationManuf
                     content = { @Content(mediaType = "application/json", schema = @Schema(implementation = StationManufacturer.class))})
     })
     @GetMapping("/")
+    @PreAuthorize("hasRole('PH_USER')")
     List<StationManufacturer> getAllStationManufacturer() {
         return super.dataService.findAll();
     }
@@ -56,6 +60,7 @@ public class StationManufacturerController extends EntityController<StationManuf
                     content = { @Content(mediaType = "application/json", schema = @Schema(implementation = StationManufacturer.class))})
     })
     @PutMapping("/")
+    @PreAuthorize("hasRole('PH_USER')")
     StationManufacturer updateStationManufacturer(@RequestBody StationManufacturer stationManufacturer){
         return super.dataService.save(stationManufacturer);
     }
@@ -65,6 +70,7 @@ public class StationManufacturerController extends EntityController<StationManuf
             @ApiResponse(responseCode = "200")
     })
     @DeleteMapping("/{uuid:UUID}")
+    @PreAuthorize("hasRole('PH_USER')")
     void deleteStationManufacturer(@PathVariable UUID uuid){
         super.dataService.delete(getStationManufacturerById(uuid));
     }

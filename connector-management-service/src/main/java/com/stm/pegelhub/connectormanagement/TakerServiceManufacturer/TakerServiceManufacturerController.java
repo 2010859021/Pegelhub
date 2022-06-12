@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -24,6 +25,7 @@ public class TakerServiceManufacturerController extends EntityController<TakerSe
                 content = { @Content(mediaType = "application/json", schema = @Schema(implementation = TakerServiceManufacturer.class))})
     })
     @PostMapping("/")
+    @PreAuthorize("hasRole('PH_USER')")
     TakerServiceManufacturer createTakerServiceManufacturer(@RequestBody TakerServiceManufacturer takerServiceManufacturer){
         return super.dataService.save(takerServiceManufacturer);
     }
@@ -34,6 +36,7 @@ public class TakerServiceManufacturerController extends EntityController<TakerSe
                     content = { @Content(mediaType = "application/json", schema = @Schema(implementation = TakerServiceManufacturer.class))})
     })
     @GetMapping("/{uuid}")
+    @PreAuthorize("hasRole('PH_USER')")
     TakerServiceManufacturer getTakerServiceManufacturerById(@PathVariable UUID uuid){
         TakerServiceManufacturer searchObj = new TakerServiceManufacturer();
         searchObj.setId(uuid);
@@ -46,6 +49,7 @@ public class TakerServiceManufacturerController extends EntityController<TakerSe
                     content = { @Content(mediaType = "application/json", schema = @Schema(implementation = TakerServiceManufacturer.class))})
     })
     @GetMapping("/")
+    @PreAuthorize("hasRole('PH_USER')")
     List<TakerServiceManufacturer> getAllTakerServiceManufacturers() {
         return super.dataService.findAll();
     }
@@ -65,6 +69,7 @@ public class TakerServiceManufacturerController extends EntityController<TakerSe
             @ApiResponse(responseCode = "200")
     })
     @DeleteMapping("/{uuid:UUID}")
+    @PreAuthorize("hasRole('PH_USER')")
     void deleteTakerServiceManufacturer(@PathVariable UUID uuid){
         super.dataService.delete(getTakerServiceManufacturerById(uuid));
     }
