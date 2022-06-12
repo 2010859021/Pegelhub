@@ -13,36 +13,15 @@ spring:
     config:
       enabled: false
 
-  jpa:
-    show-sql: true
-
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
-
-    hibernate:
-      ddl-auto: update
-
   application:
     name: rest-data-publisher-service
 
-  datasource:
-    # CHANGEME
-    url: jdbc:postgresql://localhost:5432/users
-    username: postgres
-    password: usermanager
-
-security:
-  # CHANGEME
-  configurations:
-    - path: /somepath
-      role: somerole
-
 keycloak:
-  auth-server-url: ${AUTH_URL}
-  realm: ${AUTH_REALM}
-  resource: ${AUTH_RESOURCE}
-  public-client: true
+  auth-server-url: ${AUTHENTICATION_BASE_URL}
+  realm: ${AUTHENTICATION_REALM}
+  resource: ${AUTHENTICATION_CLIENT_ID}
+  public-client: false
+  bearer-only: true
 
 server:
   address: 0.0.0.0

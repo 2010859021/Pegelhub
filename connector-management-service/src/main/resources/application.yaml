@@ -19,9 +19,16 @@ spring:
   application:
     name: connector-management-service
 
+keycloak:
+  auth-server-url: ${AUTHENTICATION_BASE_URL}
+  realm: ${AUTHENTICATION_REALM}
+  resource: ${AUTHENTICATION_CLIENT_ID}
+  public-client: false
+  bearer-only: true
+
 server:
   address: 0.0.0.0
-  port: 8180
+  port: ${APP_PORT}
 
 eureka:
   client:

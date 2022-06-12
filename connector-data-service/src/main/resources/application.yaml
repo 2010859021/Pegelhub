@@ -19,17 +19,12 @@ spring:
   application:
     name: connector-data-service
 
-security:
-  # CHANGEME
-  configurations:
-    - path: /somepath
-      role: somerole
-
 keycloak:
-  auth-server-url: ${AUTH_URL}
-  realm: ${AUTH_REALM}
-  resource: ${AUTH_RESOURCE}
-  public-client: true
+  auth-server-url: ${AUTHENTICATION_BASE_URL}
+  realm: ${AUTHENTICATION_REALM}
+  resource: ${AUTHENTICATION_CLIENT_ID}
+  public-client: false
+  bearer-only: true
 
 server:
   address: 0.0.0.0
