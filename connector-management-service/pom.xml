@@ -18,6 +18,19 @@
                     <target>16</target>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>com.stm.pegelhub.Application</mainClass>
+                    <excludes>
+                        <exclude>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                        </exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
@@ -27,6 +40,24 @@
             <artifactId>component-skeleton</artifactId>
             <version>2022.01</version>
         </dependency>
+
+<!--        <dependency>-->
+<!--            <groupId>org.keycloak.bom</groupId>-->
+<!--            <artifactId>keycloak-adapter-bom</artifactId>-->
+<!--            <version>17.0.0</version>-->
+<!--            <type>pom</type>-->
+<!--            <scope>import</scope>-->
+<!--        </dependency>-->
+
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-starter-security</artifactId>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>org.keycloak</groupId>-->
+<!--            <artifactId>keycloak-spring-boot-starter</artifactId>-->
+<!--            <version>17.0.0</version>-->
+<!--        </dependency>-->
     </dependencies>
 
     <artifactId>connector-management-service</artifactId>
