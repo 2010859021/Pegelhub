@@ -25,6 +25,8 @@ ENV DATA_STORE_TOKEN=null \
     DATA_STORE_BUCKET=data \
     DATA_STORE_ORG=influxdb
 
+ENV INFLUX_FILE=""
+
 # Expose configured port
 EXPOSE $APP_PORT
 

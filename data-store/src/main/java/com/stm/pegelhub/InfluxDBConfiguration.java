@@ -26,7 +26,7 @@ public class InfluxDBConfiguration {
 
     @PostConstruct
     private void reloadPropertiesFromInfluxFile() {
-        if (System.getenv("INFLUX_FILE") != null) {
+        if (System.getenv("INFLUX_FILE") != null && !System.getenv("INFLUX_FILE").isEmpty()) {
             logger.info("Reading influx configuration from environmentally given file");
             try {
                 ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
