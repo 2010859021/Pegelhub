@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/takerServiceManufacturer")
+@RequestMapping("/api/v1/takerServiceManufacturer")
 public class TakerServiceManufacturerController extends EntityController<TakerServiceManufacturer> {
     @Operation(summary = "Adds a new TakerServiceManufacturer to the system")
     @ApiResponses(value = {

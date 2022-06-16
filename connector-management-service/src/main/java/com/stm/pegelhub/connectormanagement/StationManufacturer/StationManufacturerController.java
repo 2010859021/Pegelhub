@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/stationManufacturer")
+@RequestMapping("/api/v1/stationManufacturer")
 public class StationManufacturerController extends EntityController<StationManufacturer> {
     @Operation(summary = "Adds a new StationManufacturer to the system")
     @ApiResponses(value = {

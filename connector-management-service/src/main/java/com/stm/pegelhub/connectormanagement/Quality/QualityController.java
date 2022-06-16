@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/quality")
+@RequestMapping("/api/v1/quality")
 public class QualityController extends EntityController<Quality> {
     @Operation(summary = "Adds a new Quality to the system")
     @ApiResponses(value = {

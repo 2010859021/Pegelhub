@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/connector")
+@RequestMapping("/api/v1/connector")
 public class ConnectorController extends EntityController<Connector> {
     @Operation(summary = "Adds a new Connector to the system")
     @ApiResponses(value = {

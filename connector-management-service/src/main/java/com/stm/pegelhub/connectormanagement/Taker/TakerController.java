@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/taker")
+@RequestMapping("/api/v1/taker")
 public class TakerController extends EntityController<Taker> {
     @Operation(summary = "Adds a new Taker to the system")
     @ApiResponses(value = {

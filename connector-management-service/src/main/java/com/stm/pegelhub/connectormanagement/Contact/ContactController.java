@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/contact")
+@RequestMapping("/api/v1/contact")
 public class ContactController extends EntityController<Contact> {
     @Operation(summary = "Adds a new Contact to the system")
     @ApiResponses(value = {

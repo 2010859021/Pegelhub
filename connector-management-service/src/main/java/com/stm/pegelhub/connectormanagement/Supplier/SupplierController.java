@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/supplier")
+@RequestMapping("/api/v1/supplier")
 public class SupplierController extends EntityController<Supplier> {
     @Operation(summary = "Adds a new Supplier to the system")
     @ApiResponses(value = {

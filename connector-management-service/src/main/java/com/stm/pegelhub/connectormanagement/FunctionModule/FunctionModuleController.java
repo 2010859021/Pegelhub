@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/functionModule")
+@RequestMapping("/api/v1/functionModule")
 public class FunctionModuleController extends EntityController<FunctionModule> {
     @Operation(summary = "Adds a new FunctionModule to the system")
     @ApiResponses(value = {

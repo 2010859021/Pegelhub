@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/error")
+@RequestMapping("/api/v1/error")
 public class ErrorController {
     @Autowired
     ErrorService errorService;
