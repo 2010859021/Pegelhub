@@ -1,0 +1,96 @@
+spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  main:
+    allow-bean-definition-overriding: true
+    allow-circular-references: true
+  #    web-application-type: reactive
+
+  rabbitmq:
+    host: ${RABBIT_URL}
+    port: 5672
+    virtual-host: /
+    username: ${RABBIT_USER}
+    password: ${RABBIT_PASSWORD}
+
+  cloud:
+    config:
+      enabled: false
+
+    # ------------------
+    # routing properties
+    # ------------------
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      filter:
+        secure-headers:
+          disable: Authorization
+      routes:
+        - uri: lb://CONNECTOR-MANAGEMENT-SERVICE/
+          predicates:
+            - Path=/services/management/**
+          filters:
+            - RewritePath=/services/management/(?<segment>.*),/api/v1/$\{segment}
+
+  application:
+    name: routing-proxy
+
+#  security:
+#    oauth2:
+#      client:
+#        provider:
+#          keycloak:
+#            authorizationUri: http://localhost:8580/realms/master/protocol/openid-connect/auth
+#            tokenUri: http://localhost:8580/realms/master/protocol/openid-connect/token
+#            jwkSetUri: http://localhost:8580/realms/master/protocol/openid-connect/certs
+#      resourceserver:
+#        jwt:
+#          issuer-uri: http://localhost:8580/realms/master
+
+#zuul:
+#  sensitive-headers: Cookie,Set-Cookie
+#  routes:
+#    SensorService-Records:
+#      path: /services/management/**
+##      url: http://localhost:8084/
+#      url: lb://CONNECTOR-MANAGEMENT-SERVICE
+##      service-id: connector-management-service
+
+# ------------------------
+# authorization properties
+# ------------------------
+#keycloak:
+#  auth-server-url: http://localhost:8580/
+#  realm: master
+#  resource: pegelhub-client
+#  public-client: true
+#  use-resource-role-mappings: false
+
+#security:
+#  configurations:
+#    - path: /somepath
+#      role: somerole
+
+server:
+  address: 0.0.0.0
+  port: ${APP_PORT}
+
+eureka:
+  instance:
+    leaseRenewalIntervalInSeconds: 1
+    leaseExpirationDurationInSeconds: 2
+  client:
+    serviceUrl:
+      defaultZone: ${REGISTRY_URL}
+    registerWithEureka: true
+    fetchRegistry: true
+
+management:
+  port: 8181
+  endpoints:
+    web:
+      exposure:
+        include: '*'
