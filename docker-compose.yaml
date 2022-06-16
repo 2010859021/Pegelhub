@@ -1,0 +1,158 @@
+version: "3.5"
+
+volumes:
+  authentication-data:
+  metastore-data:
+  datastore-data:
+
+networks:
+  components:
+    name: pegelhub-components
+
+services:
+  # base environment
+  rabbit:
+    image: rabbitmq
+    environment:
+      - RABBITMQ_DEFAULT_USER=$RABBIT_USER
+      - RABBITMQ_DEFAULT_PASS=$RABBIT_PASSWORD
+    networks:
+      - components
+
+  registry:
+    build:
+      context: service-registry
+    environment:
+      - MQ_USER=$RABBIT_USER
+      - MQ_PASSWORD=$RABBIT_PASSWORD
+    depends_on:
+      - rabbit
+    networks:
+      - components
+
+  auth-db:
+    image: postgres:10
+    environment:
+      - POSTGRES_PASSWORD=$AUTH_PASSWORD
+      - POSTGRES_DB=$AUTH_DB
+    volumes:
+      - authentication-data:/var/lib/postgresql
+
+  authentication:
+    image: quay.io/keycloak/keycloak:17
+    environment:
+      - KC_ADMIN=$AUTH_ADMIN_USER
+      - KC_ADMIN_PASS=$AUTH_ADMIN_PASSWORD
+      - KC_DB=postgres
+      - KC_DB_PASSWORD=$AUTH_PASSWORD
+      - KC_DB_URL_DATABASE=$AUTH_DB
+      - KC_DB_URL_HOST=auth-db
+      - KC_DB_USERNAME=postgres
+      - KC_FEATURES=token-exchange
+    command:
+      - start --auto-build
+    depends_on:
+      - auth-db
+    networks:
+      - components
+
+  # backend components
+  meta-db:
+    image: postgres
+    environment:
+      - POSTGRES_PASSWORD=$META_PASSWORD
+      - POSTGRES_DB=$META_DB
+    volumes:
+      - metastore-data:/var/lib/postgresql
+
+  meta-store:
+    build:
+      context: meta-store
+    environment:
+      - RABBIT_USER=$RABBIT_USER
+      - RABBIT_PASSWORD=$RABBIT_PASSWORD
+      - DB_HOST=meta-db:5432
+      - DB_DATABASE=$META_DB
+      - DB_USER=postgres
+      - DB_PASSWORD=$META_PASSWORD
+    links:
+      - meta-db
+    depends_on:
+      - rabbit
+      - registry
+    networks:
+      - components
+
+  data-db:
+    image: influxdb:2.2-alpine
+    environment:
+      - DOCKER_INFLUXDB_INIT_USERNAME=$DATA_USER
+      - DOCKER_INFLUXDB_INIT_PASSWORD=$DATA_PASSWORD
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=$DATA_PASSWORD
+      - DOCKER_INFLUXDB_INIT_ORG=$DATA_USER
+      - DOCKER_INFLUXDB_INIT_BUCKET=$DATA_DB
+    volumes:
+      - datastore-data:/var/lib/influxdb
+
+  data-store:
+    build:
+      context: data-store
+    environment:
+      - RABBIT_USER=$RABBIT_USER
+      - RABBIT_PASSWORD=$RABBIT_PASSWORD
+      - TELEMETRY_STORE_URL=data-db
+      - TELEMETRY_STORE_ORG=$DATA_USER
+      - TELEMETRY_STORE_BUCKET=$DATA_DB
+      - TELEMETRY_STORE_TOKEN=$DATA_PASSWORD
+      - DATA_STORE_URL=data-db
+      - DATA_STORE_ORG=$DATA_USER
+      - DATA_STORE_BUCKET=$DATA_DB
+      - DATA_STORE_TOKEN=$DATA_PASSWORD
+    links:
+      - data-db
+    depends_on:
+      - rabbit
+      - registry
+    networks:
+      - components
+
+  # edge components
+  connector-management-service:
+    build:
+      context: connector-management-service
+    environment:
+      - RABBIT_USER=$RABBIT_USER
+      - RABBIT_PASSWORD=$RABBIT_PASSWORD
+    depends_on:
+      - rabbit
+      - registry
+      - meta-store
+      - authentication
+    networks:
+      - components
+
+  connector-data-service:
+    build:
+      context: connector-data-service
+    environment:
+      - RABBIT_USER=$RABBIT_USER
+      - RABBIT_PASSWORD=$RABBIT_PASSWORD
+    depends_on:
+      - rabbit
+      - registry
+      - data-store
+      - authentication
+    networks:
+      - components
+
+  # exposed proxy service
+  proxy:
+    build:
+      context: routing-proxy
+    ports:
+      - "8086:8080"
+    depends_on:
+      - registry
+      - connector-management-service
+    networks:
+      - components

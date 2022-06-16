@@ -5,13 +5,19 @@ RUN addgroup -S coreapp && adduser -S coreapp -G coreapp
 USER coreapp:coreapp
 
 # RabbitMQ connection
-ENV MQ_URL=rabbit \
-    MQ_USER="" \
-    MQ_PASSWORD=""
+ENV RABBIT_URL=rabbit \
+ENV RABBIT_USER="" \
+ENV RABBIT_PASSWORD=""
+
+# authentication configuration
+ENV AUTHENTICATION_CLIENT_ID=admin-ui
+ENV AUTHENTICATION_REALM=master
+ENV AUTHENTICATION_BASE_URL=http://authentication/
 
 # Registry configuration
-ENV EUREKA_HOSTNAME=0.0.0.0
-ENV APP_PORT=8090
+ENV SERVICE_REGISTRY_HOST=registry
+ENV SERVICE_REGISTRY=http://$SERVICE_REGISTRY_HOST:8090/eureka
+ENV APP_PORT=8080
 
 # Expose configured port
 EXPOSE $APP_PORT
