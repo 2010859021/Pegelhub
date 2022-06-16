@@ -15,7 +15,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/datastore/telemetry")
+@RequestMapping("/api/v1/telemetry")
 public class TelemetryController {
 
     @Autowired

@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/datastore/measurement")
+@RequestMapping("/api/v1/measurement")
 public class MeasurementController {
 
     @Autowired

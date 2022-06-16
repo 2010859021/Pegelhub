@@ -3,6 +3,7 @@ package com.stm.pegelhub.service;
 import com.influxdb.client.InfluxDBClient;
 import com.influxdb.client.domain.WritePrecision;
 import com.influxdb.client.write.Point;
+import com.stm.pegelhub.InfluxDBConfiguration;
 import com.stm.pegelhub.InfluxDBConnection;
 import com.stm.pegelhub.model.MeasurementData;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,10 @@ public class MeasurementService {
     @Autowired
     @Qualifier("dataClient")
     private  InfluxDBClient client;
+
+    @Autowired
+    @Qualifier("dataConfiguration")
+    private InfluxDBConfiguration.DBProps configuration;
 
     public MeasurementData writeDataPoint(MeasurementData dataPoint) {
 
@@ -44,14 +49,14 @@ public class MeasurementService {
     }
 
     public Object queryData(String range) {
-        String query = "from(bucket: \"MeasurementData\") |> range(start: -" + range +")";
+        String query = "from(bucket: \"" + configuration.getBucket() + "\") |> range(start: -" + range +")";
 
      var points =   this.inConn.queryData(this.client, query);
 
         return  points;
     }
 
-    public Object queryLastData(String uuiId) {String query = "from(bucket: \"MeasurementData\") |> range(start: -72h) |> filter(fn: (r) => r._measurement == \"" + uuiId +"\") |> first()";
+    public Object queryLastData(String uuiId) {String query = "from(bucket: \"" + configuration.getBucket() + "\") |> range(start: -72h) |> filter(fn: (r) => r._measurement == \"" + uuiId +"\") |> first()";
 
         var point =  this.inConn.queryData(this.client, query);
 

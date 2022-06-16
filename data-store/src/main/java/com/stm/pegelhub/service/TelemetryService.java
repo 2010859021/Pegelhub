@@ -27,6 +27,10 @@ public class TelemetryService {
     @Qualifier("telemetryClient")
     private  InfluxDBClient client;
 
+    @Autowired
+    @Qualifier("telemetryConfiguration")
+    private InfluxDBConfiguration.DBProps configuration;
+
     public TelemetryData writeTelemetryData(TelemetryData telemetryDataPoint) {
 
         Point telemetryData = Point.measurement(telemetryDataPoint.getMeasurement())
@@ -53,7 +57,7 @@ public class TelemetryService {
     }
     public Object queryData(String range) {
 
-        String query = "from(bucket: \"TelemetryData\") |> range(start: -" + range +")";
+        String query = "from(bucket: \"" + configuration.getBucket() + "\") |> range(start: -" + range +")";
 
 
         var points = this.inConn.queryData(this.client, query);
@@ -64,7 +68,7 @@ public class TelemetryService {
 
     public Object queryLastData(String uuiId) {
 
-        String query = "from(bucket: \"TelemetryData\") |> range(start: -72h) |> filter(fn: (r) => r._measurement == \"" + uuiId +"\") |> first()";
+        String query = "from(bucket: \"" + configuration.getBucket() + "\") |> range(start: -72h) |> filter(fn: (r) => r._measurement == \"" + uuiId +"\") |> first()";
 
         var point =  this.inConn.queryData(this.client, query);
 
