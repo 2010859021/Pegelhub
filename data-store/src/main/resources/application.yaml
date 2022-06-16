@@ -45,14 +45,14 @@ keycloak:
 
 server:
   address: 0.0.0.0
-  port: 8080
+  port: ${APP_PORT}
 
 eureka:
   client:
     serviceUrl:
       defaultZone: ${REGISTRY_URL}
-    registerWithEureka: false
-    fetchRegistry: false
+    registerWithEureka: true
+    fetchRegistry: true
 
 management:
   port: 8081
@@ -60,3 +60,6 @@ management:
     web:
       exposure:
         include: '*'
+
+logging.level.com.stm.pegelhub: TRACE
+logging.level.root: INFO

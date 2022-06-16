@@ -38,8 +38,12 @@ public class WebSecurityConfiguration extends KeycloakWebSecurityConfigurerAdapt
     protected void configure(HttpSecurity http) throws Exception {
         super.configure(http);
         http.authorizeRequests()
-//                .antMatchers("/**")
-//                .hasRole("PH_USER")
+                .antMatchers("/swagger-ui/**")
+                .permitAll()
+                .antMatchers("/actuator/**")
+                .permitAll()
+                .antMatchers("/v3/**")
+                .permitAll()
                 .anyRequest()
                 .authenticated();
     }
