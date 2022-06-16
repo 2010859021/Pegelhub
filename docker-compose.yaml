@@ -86,13 +86,18 @@ services:
   data-db:
     image: influxdb:2.2-alpine
     environment:
-      - DOCKER_INFLUXDB_INIT_USERNAME=$DATA_USER
-      - DOCKER_INFLUXDB_INIT_PASSWORD=$DATA_PASSWORD
-      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=$DATA_PASSWORD
-      - DOCKER_INFLUXDB_INIT_ORG=$DATA_USER
-      - DOCKER_INFLUXDB_INIT_BUCKET=$DATA_DB
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME=$DATA_ADMIN_USER
+      - DOCKER_INFLUXDB_INIT_PASSWORD=$DATA_ADMIN_PASSWORD
+      - DOCKER_INFLUXDB_INIT_ORG=$DATA_ORG
+      - DOCKER_INFLUXDB_INIT_BUCKET=$INTERNAL_DB
+      - BUCKET_TELEMETRY=$TELEMETRY_DB
+      - BUCKET_DATA=$DATA_DB
+      - STORE_USER=$DATA_USER
     volumes:
       - datastore-data:/var/lib/influxdb
+      - $(pwd)/init-influxdb.sh:/docker-entrypoint-initdb.d/00-setup.sh
+      - $(pwd)/.datastoreconfig:/etc/influxdb2/storeapp
 
   data-store:
     build:
@@ -108,6 +113,9 @@ services:
       - DATA_STORE_ORG=$DATA_USER
       - DATA_STORE_BUCKET=$DATA_DB
       - DATA_STORE_TOKEN=$DATA_PASSWORD
+      - INFLUX_FILE=/etc/influxdb2/storeapp
+    volumes:
+      - $(pwd)/.datastoreconfig:/etc/influxdb2/storeapp
     links:
       - data-db
     depends_on:
