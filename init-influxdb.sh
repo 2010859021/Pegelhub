@@ -10,12 +10,12 @@ TOKEN=$(influx auth create --user "$STORE_USER" --read-buckets --write-buckets |
 OUT_FILE="/etc/influxdb2/store/storeapp.yaml"
 touch $OUT_FILE
 echo "data:" > $OUT_FILE
-echo "  org: $STORE_USER" >> $OUT_FILE
+echo "  org: $DOCKER_INFLUXDB_INIT_ORG" >> $OUT_FILE
 echo "  token: $TOKEN" >> $OUT_FILE
 echo "  bucket: $BUCKET_DATA" >> $OUT_FILE
 echo "  url: none" >> $OUT_FILE
 echo "telemetry:" >> $OUT_FILE
-echo "  org: $STORE_USER" >> $OUT_FILE
+echo "  org: $DOCKER_INFLUXDB_INIT_ORG" >> $OUT_FILE
 echo "  token: $TOKEN" >> $OUT_FILE
 echo "  bucket: $BUCKET_TELEMETRY" >> $OUT_FILE
 echo "  url: none" >> $OUT_FILE
