@@ -24,7 +24,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.stm.pegelhub.Application</mainClass>
+                    <mainClass>com.stm.pegelhub.GatewayApplication</mainClass>
                     <excludes>
                         <exclude>
                             <groupId>org.projectlombok</groupId>

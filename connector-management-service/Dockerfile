@@ -10,9 +10,9 @@ ENV RABBIT_USER=""
 ENV RABBIT_PASSWORD=""
 
 # authentication configuration
-ENV AUTHENTICATION_CLIENT_ID=admin-ui
+ENV AUTHENTICATION_CLIENT_ID=pegelhub-client
 ENV AUTHENTICATION_REALM=master
-ENV AUTHENTICATION_BASE_URL=http://authentication/
+ENV AUTHENTICATION_BASE_URL=http://authentication:8081/
 
 # Registry configuration
 ENV SERVICE_REGISTRY_HOST=registry

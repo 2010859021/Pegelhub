@@ -48,7 +48,7 @@ server:
 eureka:
   client:
     serviceUrl:
-      defaultZone: ${REGISTRY_URL}
+      defaultZone: ${SERVICE_REGISTRY}
     registerWithEureka: true
     fetchRegistry: true
 

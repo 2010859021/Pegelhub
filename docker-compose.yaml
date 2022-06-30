@@ -9,6 +9,15 @@ networks:
   components:
     name: pegelhub-components
 
+  authentication-net:
+    name: pegelhub-authentication
+
+  meta-net:
+    name: pegelhub-metastore
+
+  data-net:
+    name: pegelhub-datastore
+
 services:
   # base environment
   rabbit:
@@ -37,30 +46,34 @@ services:
       - POSTGRES_DB=$AUTH_DB
     volumes:
       - "authentication-data:/var/lib/postgresql"
+    networks:
+      - authentication-net
 
   authentication:
     image: quay.io/keycloak/keycloak:17.0.0
     environment:
-      - KC_ADMIN=$AUTH_ADMIN_USER
-      - KC_ADMIN_PASS=$AUTH_ADMIN_PASSWORD
+      - KEYCLOAK_ADMIN=$AUTH_ADMIN_USER
+      - KEYCLOAK_ADMIN_PASSWORD=$AUTH_ADMIN_PASSWORD
       - KC_DB=postgres
       - KC_DB_PASSWORD=$AUTH_PASSWORD
-      - KC_DB_URL=jdbc:postgresql://auth-db/$AUTH_DB
       - KC_DB_URL_DATABASE=$AUTH_DB
       - KC_DB_URL_HOST=auth-db
       - KC_DB_USERNAME=postgres
       - KC_FEATURES=token-exchange
+      - KC_HTTP_PORT=8081
+      - KC_HOSTNAME=http://localhost:8081/
+      - KC_HOSTNAME_STRICT=false
+      - KC_PROXY=passthrough
     command:
       - start-dev
 #      - start --auto-build
     ports:
-      - "8081:8080"
+      - "8081:8081"
     depends_on:
-      - auth-db
-    links:
       - auth-db
     networks:
       - components
+      - authentication-net
 
   # backend components
   meta-db:
@@ -70,6 +83,8 @@ services:
       - POSTGRES_DB=$META_DB
     volumes:
       - "metastore-data:/var/lib/postgresql"
+    networks:
+      - meta-net
 
   meta-store:
     build:
@@ -77,17 +92,16 @@ services:
     environment:
       - RABBIT_USER=$RABBIT_USER
       - RABBIT_PASSWORD=$RABBIT_PASSWORD
-      - DB_HOST="meta-db:5432"
-      - DB_DATABASE=$META_DB
+      - DB_URI=meta-db:5432/$META_DB
       - DB_USER=postgres
       - DB_PASSWORD=$META_PASSWORD
-    links:
-      - meta-db
     depends_on:
       - rabbit
       - registry
+      - meta-db
     networks:
       - components
+      - meta-net
 
   data-db:
     image: influxdb:2.2-alpine
@@ -105,7 +119,9 @@ services:
     volumes:
       - "datastore-data:/var/lib/influxdb"
       - "./init-influxdb.sh:/docker-entrypoint-initdb.d/00-setup.sh"
-      - "./.datastoreconfig:/etc/influxdb2/storeapp"
+      - "./.datastoreconfig:/etc/influxdb2/store/"
+    networks:
+      - data-net
 
   data-store:
     build:
@@ -113,24 +129,24 @@ services:
     environment:
       - RABBIT_USER=$RABBIT_USER
       - RABBIT_PASSWORD=$RABBIT_PASSWORD
-      - TELEMETRY_STORE_URL=data-db
+      - TELEMETRY_STORE_URL=http://data-db:8086/
       - TELEMETRY_STORE_ORG=$DATA_USER
       - TELEMETRY_STORE_BUCKET=$DATA_DB
       - TELEMETRY_STORE_TOKEN=$DATA_PASSWORD
-      - DATA_STORE_URL=data-db
+      - DATA_STORE_URL=http://data-db:8086/
       - DATA_STORE_ORG=$DATA_USER
       - DATA_STORE_BUCKET=$DATA_DB
       - DATA_STORE_TOKEN=$DATA_PASSWORD
-      - INFLUX_FILE=/etc/influxdb2/storeapp
+      - INFLUX_FILE=/etc/influxdb2/store/storeapp.yaml
     volumes:
-      - "./.datastoreconfig:/etc/influxdb2/storeapp"
-    links:
-      - data-db
+      - "./.datastoreconfig:/etc/influxdb2/store/"
     depends_on:
       - rabbit
       - registry
+      - data-db
     networks:
       - components
+      - data-net
 
   # edge components
   connector-management-service:

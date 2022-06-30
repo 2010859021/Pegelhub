@@ -19,12 +19,6 @@ spring:
   application:
     name: data-store
 
-security:
-  # CHANGEME
-  configurations:
-    - path: /somepath
-      role: somerole
-
 datasource:
   telemetry:
     url: ${TELEMETRY_STORE_URL}
@@ -50,7 +44,7 @@ server:
 eureka:
   client:
     serviceUrl:
-      defaultZone: ${REGISTRY_URL}
+      defaultZone: ${SERVICE_REGISTRY}
     registerWithEureka: true
     fetchRegistry: true
 
