@@ -5,7 +5,6 @@ spring:
   main:
     allow-bean-definition-overriding: true
     allow-circular-references: true
-  #    web-application-type: reactive
 
   rabbitmq:
     host: ${RABBIT_URL}
@@ -35,44 +34,20 @@ spring:
           filters:
             - RewritePath=/services/management/(?<segment>.*),/api/v1/$\{segment}
 
+        - uri: lb://CONNECTOR-DATA-SERVICE/
+          predicates:
+            - Path=/services/data/**
+          filters:
+            - RewritePath=/services/data/(?<segment>.*),/api/v1/$\{segment}
+
+        - uri: lb://DATA-STORE/
+          predicates:
+            - Path=/services/store/**
+          filters:
+            - RewritePath=/services/store/(?<segment>.*),/api/v1/$\{segment}
+
   application:
     name: routing-proxy
-
-#  security:
-#    oauth2:
-#      client:
-#        provider:
-#          keycloak:
-#            authorizationUri: http://localhost:8580/realms/master/protocol/openid-connect/auth
-#            tokenUri: http://localhost:8580/realms/master/protocol/openid-connect/token
-#            jwkSetUri: http://localhost:8580/realms/master/protocol/openid-connect/certs
-#      resourceserver:
-#        jwt:
-#          issuer-uri: http://localhost:8580/realms/master
-
-#zuul:
-#  sensitive-headers: Cookie,Set-Cookie
-#  routes:
-#    SensorService-Records:
-#      path: /services/management/**
-##      url: http://localhost:8084/
-#      url: lb://CONNECTOR-MANAGEMENT-SERVICE
-##      service-id: connector-management-service
-
-# ------------------------
-# authorization properties
-# ------------------------
-#keycloak:
-#  auth-server-url: http://localhost:8580/
-#  realm: master
-#  resource: pegelhub-client
-#  public-client: true
-#  use-resource-role-mappings: false
-
-#security:
-#  configurations:
-#    - path: /somepath
-#      role: somerole
 
 server:
   address: 0.0.0.0

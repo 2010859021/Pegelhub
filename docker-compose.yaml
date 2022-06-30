@@ -36,22 +36,28 @@ services:
       - POSTGRES_PASSWORD=$AUTH_PASSWORD
       - POSTGRES_DB=$AUTH_DB
     volumes:
-      - authentication-data:/var/lib/postgresql
+      - "authentication-data:/var/lib/postgresql"
 
   authentication:
-    image: quay.io/keycloak/keycloak:17
+    image: quay.io/keycloak/keycloak:17.0.0
     environment:
       - KC_ADMIN=$AUTH_ADMIN_USER
       - KC_ADMIN_PASS=$AUTH_ADMIN_PASSWORD
       - KC_DB=postgres
       - KC_DB_PASSWORD=$AUTH_PASSWORD
+      - KC_DB_URL=jdbc:postgresql://auth-db/$AUTH_DB
       - KC_DB_URL_DATABASE=$AUTH_DB
       - KC_DB_URL_HOST=auth-db
       - KC_DB_USERNAME=postgres
       - KC_FEATURES=token-exchange
     command:
-      - start --auto-build
+      - start-dev
+#      - start --auto-build
+    ports:
+      - "8081:8080"
     depends_on:
+      - auth-db
+    links:
       - auth-db
     networks:
       - components
@@ -63,7 +69,7 @@ services:
       - POSTGRES_PASSWORD=$META_PASSWORD
       - POSTGRES_DB=$META_DB
     volumes:
-      - metastore-data:/var/lib/postgresql
+      - "metastore-data:/var/lib/postgresql"
 
   meta-store:
     build:
@@ -71,7 +77,7 @@ services:
     environment:
       - RABBIT_USER=$RABBIT_USER
       - RABBIT_PASSWORD=$RABBIT_PASSWORD
-      - DB_HOST=meta-db:5432
+      - DB_HOST="meta-db:5432"
       - DB_DATABASE=$META_DB
       - DB_USER=postgres
       - DB_PASSWORD=$META_PASSWORD
@@ -94,10 +100,12 @@ services:
       - BUCKET_TELEMETRY=$TELEMETRY_DB
       - BUCKET_DATA=$DATA_DB
       - STORE_USER=$DATA_USER
+    ports:
+      - "8082:8086"
     volumes:
-      - datastore-data:/var/lib/influxdb
-      - $(pwd)/init-influxdb.sh:/docker-entrypoint-initdb.d/00-setup.sh
-      - $(pwd)/.datastoreconfig:/etc/influxdb2/storeapp
+      - "datastore-data:/var/lib/influxdb"
+      - "./init-influxdb.sh:/docker-entrypoint-initdb.d/00-setup.sh"
+      - "./.datastoreconfig:/etc/influxdb2/storeapp"
 
   data-store:
     build:
@@ -115,7 +123,7 @@ services:
       - DATA_STORE_TOKEN=$DATA_PASSWORD
       - INFLUX_FILE=/etc/influxdb2/storeapp
     volumes:
-      - $(pwd)/.datastoreconfig:/etc/influxdb2/storeapp
+      - "./.datastoreconfig:/etc/influxdb2/storeapp"
     links:
       - data-db
     depends_on:
@@ -139,19 +147,19 @@ services:
     networks:
       - components
 
-  connector-data-service:
-    build:
-      context: connector-data-service
-    environment:
-      - RABBIT_USER=$RABBIT_USER
-      - RABBIT_PASSWORD=$RABBIT_PASSWORD
-    depends_on:
-      - rabbit
-      - registry
-      - data-store
-      - authentication
-    networks:
-      - components
+#  connector-data-service:
+#    build:
+#      context: connector-data-service
+#    environment:
+#      - RABBIT_USER=$RABBIT_USER
+#      - RABBIT_PASSWORD=$RABBIT_PASSWORD
+#    depends_on:
+#      - rabbit
+#      - registry
+#      - data-store
+#      - authentication
+#    networks:
+#      - components
 
   # exposed proxy service
   proxy:

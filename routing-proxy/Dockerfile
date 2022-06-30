@@ -5,9 +5,9 @@ RUN addgroup -S coreapp && adduser -S coreapp -G coreapp
 USER coreapp:coreapp
 
 # RabbitMQ connection
-ENV RABBIT_URL=rabbit \
-    RABBIT_USER="" \
-    RABBIT_PASSWORD=""
+ENV RABBIT_URL=rabbit
+ENV RABBIT_USER=""
+ENV RABBIT_PASSWORD=""
 
 # Registry configuration
 ENV SERVICE_REGISTRY_HOST=registry

@@ -5,8 +5,8 @@ RUN addgroup -S coreapp && adduser -S coreapp -G coreapp
 USER coreapp:coreapp
 
 # RabbitMQ connection
-ENV RABBIT_URL=rabbit \
-ENV RABBIT_USER="" \
+ENV RABBIT_URL=rabbit
+ENV RABBIT_USER=""
 ENV RABBIT_PASSWORD=""
 
 # authentication configuration

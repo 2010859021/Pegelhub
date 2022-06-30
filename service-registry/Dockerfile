@@ -5,9 +5,9 @@ RUN addgroup -S coreapp && adduser -S coreapp -G coreapp
 USER coreapp:coreapp
 
 # RabbitMQ connection
-ENV MQ_URL=rabbit \
-    MQ_USER="" \
-    MQ_PASSWORD=""
+ENV MQ_URL=rabbit
+ENV MQ_USER=""
+ENV MQ_PASSWORD=""
 
 # Registry configuration
 ENV EUREKA_HOSTNAME=0.0.0.0

@@ -5,9 +5,9 @@ RUN addgroup -S coreapp && adduser -S coreapp -G coreapp
 USER coreapp:coreapp
 
 # RabbitMQ connection
-ENV RABBIT_URL=rabbit \
-    RABBIT_USER="" \
-    RABBIT_PASSWORD=""
+ENV RABBIT_URL=rabbit
+ENV RABBIT_USER=""
+ENV RABBIT_PASSWORD=""
 
 # Registry configuration
 ENV SERVICE_REGISTRY_HOST=registry
@@ -15,11 +15,11 @@ ENV SERVICE_REGISTRY=http://$SERVICE_REGISTRY_HOST:8090/eureka
 ENV APP_PORT=8080
 
 # Datasource configuration
-ENV DB_PASSWORD=null \
-    DB_HOST=pegelhub-meta:5432 \
-    DB_DATABASE=pegelhub \
-    DB_URI=$DB_HOST/$DB_DATABASE \
-    DB_USER=postgres
+ENV DB_PASSWORD=null
+ENV DB_HOST=pegelhub-meta:5432
+ENV DB_DATABASE=pegelhub
+ENV DB_URI=$DB_HOST/$DB_DATABASE
+ENV DB_USER=postgres
 
 # Expose configured port
 EXPOSE $APP_PORT

@@ -5,9 +5,9 @@ RUN addgroup -S coreapp && adduser -S coreapp -G coreapp
 USER coreapp:coreapp
 
 # RabbitMQ connection
-ENV RABBIT_URL=rabbit \
-    RABBIT_USER="" \
-    RABBIT_PASSWORD=""
+ENV RABBIT_URL=rabbit
+ENV RABBIT_USER=""
+ENV RABBIT_PASSWORD=""
 
 # Registry configuration
 ENV SERVICE_REGISTRY_HOST=registry
@@ -15,15 +15,15 @@ ENV SERVICE_REGISTRY=http://$SERVICE_REGISTRY_HOST:8090/eureka
 ENV APP_PORT=8080
 
 # Datasource configuration
-ENV TELEMETRY_STORE_TOKEN=null \
-    TELEMETRY_STORE_URL=datastore \
-    TELEMETRY_STORE_BUCKET=telemetry \
-    TELEMETRY_STORE_ORG=influxdb
+ENV TELEMETRY_STORE_TOKEN=null
+ENV TELEMETRY_STORE_URL=datastore
+ENV TELEMETRY_STORE_BUCKET=telemetry
+ENV TELEMETRY_STORE_ORG=influxdb
 
-ENV DATA_STORE_TOKEN=null \
-    DATA_STORE_URL=datastore \
-    DATA_STORE_BUCKET=data \
-    DATA_STORE_ORG=influxdb
+ENV DATA_STORE_TOKEN=null
+ENV DATA_STORE_URL=datastore
+ENV DATA_STORE_BUCKET=data
+ENV DATA_STORE_ORG=influxdb
 
 ENV INFLUX_FILE=""
 
